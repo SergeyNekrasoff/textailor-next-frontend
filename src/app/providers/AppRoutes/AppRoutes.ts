@@ -16,33 +16,33 @@ export class AppRoutes {
     return getRoute(AppPages.documents, {})
   }
 
-  // static getProject() {
-  //   return getRoute(AppPages.project, {})
-  // }
+  static getDocument() {
+    return getRoute(AppPages.document, {})
+  }
 
-  // static getEditor() {
-  //   return getRoute(AppPages.editor, {})
-  // }
+  static getTemplates() {
+    return getRoute(AppPages.templates, {})
+  }
 
-  // static getTemplates() {
-  //   return getRoute(AppPages.templates, {})
-  // }
+  static getHistory() {
+    return getRoute(AppPages.history, {})
+  }
 
-  // static getHistory() {
-  //   return getRoute(AppPages.history, {})
-  // }
+  static getProfile() {
+    return getRoute(AppPages.profile, {})
+  }
 
-  // static getProfile() {
-  //   return getRoute(AppPages.profile, {})
-  // }
+  static getSettings() {
+    return getRoute(AppPages.settings, {})
+  }
 
-  // static getSettings() {
-  //   return getRoute(AppPages.settings, {})
-  // }
+  static getUIKit() {
+    return getRoute(AppPages.UIKit, {})
+  }
 
-  // static getUIKit() {
-  //   return getRoute(AppPages.UIKit, {})
-  // }
+  static getChat() {
+    return getRoute(AppPages.chat, {})
+  }
 
   static getNotFound() {
     return getRoute(AppPages.notFound, {})

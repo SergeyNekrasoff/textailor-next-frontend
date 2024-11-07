@@ -8,5 +8,6 @@ export const route: RouteRecordRaw = {
   component: () => import('@/interfaces/dashboard/pages/DashboardPage.vue'),
   meta: {
     head: 'DASHBOARD'
+    // layout: 'empty'
   }
 }
