@@ -62,7 +62,7 @@
       <!-- Projects -->
       <div class="mt-8 mb-16">
         <div class="flex items-center justify-between">
-          <div class="text-2xl mb-4">Projects</div>
+          <div class="text-2xl mb-4">Documents</div>
         </div>
         <div class="grid grid-cols-4 gap-4 w-full">
           <div v-for="project in projects" :key="project.id" class="h-36">

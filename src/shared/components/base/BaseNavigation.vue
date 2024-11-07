@@ -22,7 +22,7 @@
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
         >
           <DocumentTextIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
-          <router-link to="/projects" class="text-lg font-[500] w-full">Projects</router-link>
+          <router-link to="/documents" class="text-lg font-[500] w-full">Documents</router-link>
         </li>
         <li
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"

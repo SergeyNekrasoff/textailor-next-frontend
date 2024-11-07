@@ -1,6 +1,6 @@
 import { routeName as dashboard } from './routes/dashboard'
-import { routeName as projects } from './routes/projects'
-import { routeName as project } from './routes/project'
+import { routeName as documents } from './routes/document'
+import { routeName as document } from './routes/document'
 import { routeName as chat } from './routes/chat'
 import { routeName as editor } from './routes/editor'
 import { routeName as templates } from './routes/templates'
@@ -12,8 +12,8 @@ import { routeName as UIKit } from './routes/ui-kit'
 
 export const pages = {
   dashboard
-  // projects,
-  // project,
+  // documents,
+  // document,
   // chat,
   // editor,
   // templates,

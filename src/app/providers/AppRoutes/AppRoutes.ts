@@ -12,8 +12,8 @@ export class AppRoutes {
     return getRoute(AppPages.dashboard, {})
   }
 
-  // static getProjects() {
-  //   return getRoute(AppPages.projects, {})
+  // static getDocuments() {
+  //   return getRoute(AppPages.documents, {})
   // }
 
   // static getProject() {
@@ -44,9 +44,9 @@ export class AppRoutes {
   //   return getRoute(AppPages.UIKit, {})
   // }
 
-  static getNotFound() {
-    return getRoute(AppPages.notFound, {})
-  }
+  // static getNotFound() {
+  //   return getRoute(AppPages.notFound, {})
+  // }
 }
 
 // TODO необязательный 2й параметр
