@@ -15,7 +15,7 @@ export default defineConfig({
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
         /\.vue$/,
         /\.vue\?vue/, // .vue
-        /\.md$/, // .md
+        /\.md$/ // .md
       ],
 
       // global imports to register
@@ -27,15 +27,15 @@ export default defineConfig({
         {
           axios: [
             // default imports
-            ['default', 'axios'], // import { default as axios } from 'axios',
-          ],
-        },
-      ],
-    }),
+            ['default', 'axios'] // import { default as axios } from 'axios',
+          ]
+        }
+      ]
+    })
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
-  },
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  }
 })

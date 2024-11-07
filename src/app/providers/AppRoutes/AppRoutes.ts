@@ -1,6 +1,6 @@
 import { AppPages } from '../router'
 
-interface IRoute<T extends object = object> {
+interface IRoute<T extends object = {}> {
   name: string
   params: T
 }
@@ -12,9 +12,9 @@ export class AppRoutes {
     return getRoute(AppPages.dashboard, {})
   }
 
-  // static getDocuments() {
-  //   return getRoute(AppPages.documents, {})
-  // }
+  static getDocuments() {
+    return getRoute(AppPages.documents, {})
+  }
 
   // static getProject() {
   //   return getRoute(AppPages.project, {})
@@ -44,13 +44,13 @@ export class AppRoutes {
   //   return getRoute(AppPages.UIKit, {})
   // }
 
-  // static getNotFound() {
-  //   return getRoute(AppPages.notFound, {})
-  // }
+  static getNotFound() {
+    return getRoute(AppPages.notFound, {})
+  }
 }
 
 // TODO необязательный 2й параметр
-function getRoute<T extends object = object>(name: string, params: T): IRoute<T> {
+function getRoute<T extends object = {}>(name: string, params: T): IRoute<T> {
   return {
     name,
     params

@@ -32,4 +32,6 @@ import BaseNavigation from '@/shared/components/base/BaseNavigation.vue'
 
 const route = useRoute()
 const isEmptyLayout = computed(() => route.meta.layout === 'empty')
+
+console.log(`isEmptyLayout: ${JSON.stringify(route.meta.layout)}`)
 </script>
