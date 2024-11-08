@@ -73,7 +73,7 @@ const click = () => {
     &:hover,
     &:active,
     &:focus {
-      @apply cursor-not-allowed bg-gray_light_3;
+      @apply cursor-not-allowed bg-divider_light_2;
     }
   }
 }

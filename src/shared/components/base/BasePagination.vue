@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useAppStore } from '@/app/providers'
+import { useAppStore } from '@/app/providers/store/index'
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -192,23 +192,23 @@ function between(page: number) {
 
     &:focus-visible,
     &:hover {
-      border-color: var(--color__blue);
-      color: var(--color__blue);
+      border-color: var(--vt-c-dark-mute);
+      color: var(--vt-c-dark-mute);
     }
 
     &:active {
-      border-color: var(--color__red--dark);
-      color: var(--color__red--dark);
+      border-color: var(--vt-c-red--dark);
+      color: var(--vt-c-red--dark);
     }
 
     &:disabled {
-      border-color: var(--color__grey--transparent);
-      color: var(--color__grey--transparent);
+      border-color: var(--vt-c-grey--transparent);
+      color: var(--vt-c-grey--transparent);
     }
 
     &.active {
-      border-color: var(--color__red);
-      color: var(--color__red);
+      border-color: var(--vt-c-red);
+      color: var(--vt-c-green-lighter);
     }
   }
 }

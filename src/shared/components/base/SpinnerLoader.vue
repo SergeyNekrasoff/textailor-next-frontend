@@ -66,7 +66,7 @@ withDefaults(
     height: calc(var(--size) - (var(--step) * 2));
     transform: translate3d(-50%, -50%, 0);
     border-radius: 100%;
-    background-color: var(--color__purple);
+    background-color: var(--vt-c-gray-dark-4);
   }
 
   &.page {

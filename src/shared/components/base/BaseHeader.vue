@@ -14,10 +14,10 @@
       <div class="flex items-center justify-end">
         <button
           type="button"
-          class="py-1 px-2 mr-2 rounded-md flex items-center justify-center border border-gray_dark_2 bg-green_lighter text-black_mute hover:bg-green_light"
+          class="py-1 px-2 mr-3 rounded-md flex items-center justify-center border border-gray_dark_2 bg-green_lighter text-black_mute hover:bg-green_light"
         >
-          <RocketLaunchIcon :size="'size-4'" class="h-4 w-4 mr-2 pointer" />
-          <span class="text-sm">Upgrade</span>
+          <RocketLaunchIcon :size="'size-4'" class="h-3 w-3 mr-2 pointer" />
+          <span class="text-xs">Upgrade</span>
         </button>
         <button type="button">
           <BellIcon :size="'size-6'" class="h-5 w-5 mr-2 pointer" @click="toggleNotification" />
