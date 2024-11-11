@@ -1,3 +1,4 @@
+import { routeName as login } from './routes/login'
 import { routeName as dashboard } from './routes/dashboard'
 import { routeName as documents } from './routes/documents'
 import { routeName as document } from './routes/document'
@@ -10,6 +11,7 @@ import { routeName as UIKit } from './routes/ui-kit'
 import { routeName as notFound } from './routes/not-found'
 
 export const pages = {
+  login,
   dashboard,
   documents,
   document,

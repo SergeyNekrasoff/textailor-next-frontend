@@ -70,7 +70,7 @@
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md mb-10"
         >
           <PlusIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
-          <button type="button">Invite members</button>
+          <button type="button" @click="openModal">Invite members</button>
         </li>
         <li
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
@@ -80,6 +80,11 @@
           </span>
           <router-link to="/account" class="w-full">Judixel89</router-link>
           <ChevronRightIcon :size="'size-6'" class="h-5 w-5" />
+        </li>
+        <li
+          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
+        >
+          <BaseToast />
         </li>
       </ul>
     </div>
@@ -157,7 +162,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import type { Ref } from 'vue'
 import {
   HomeIcon,
@@ -173,6 +178,18 @@ import {
   // ArrowLeftIcon,
   // ArrowRightIcon
 } from '@/shared/components/icons'
+import { useModal } from '@/shared/lib/use/useModal'
+
+const modal = useModal()
+
+const BaseModalExmaple = defineAsyncComponent(
+  () => import('@/shared/components/base/BaseModalExample.vue')
+)
+const BaseToast = defineAsyncComponent(() => import('@/shared/components/base/BaseToast.vue'))
+
+const openModal = async () => {
+  modal.show({ component: BaseModalExmaple })
+}
 
 const collapsed: Ref<boolean> = ref(false)
 </script>

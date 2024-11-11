@@ -8,6 +8,10 @@ interface IRoute<T extends object = {}> {
 export class AppRoutes {
   private constructor() {}
 
+  static getLogin() {
+    return getRoute(AppPages.login, {})
+  }
+
   static getDashboard() {
     return getRoute(AppPages.dashboard, {})
   }

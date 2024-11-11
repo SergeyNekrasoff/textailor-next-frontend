@@ -23,19 +23,20 @@
       <FolderPlusIcon :size="'size-10'" class="h-24 w-24 mb-4 text-text_dark_4" />
       <p class="text-xl font-[400] mb-1">No documents found</p>
       <span class="text-xs font-[400] text-gray_dark_1">Get started by creating new document</span>
-      <button
-        type="button"
-        class="mt-6 p-2 rounded-md flex items-center justify-center border border-gray_dark_2 bg-text_dark_4"
-      >
-        <DocumentPlusIcon :size="'size-6'" class="h-4 w-4 mr-2 text-text_dark_2" />
-        <span class="text-sm">Create new document</span>
-      </button>
+
+      <BaseButton class="mt-6 bg-text_dark_4">
+        <template v-slot:icon>
+          <DocumentPlusIcon :size="'size-6'" class="h-4 w-4 mr-2 text-text_dark_2" />
+        </template>
+        Create new document
+      </BaseButton>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { FolderPlusIcon, DocumentPlusIcon } from '../../../shared/components/icons'
+import BaseButton from '@/shared/components/base/BaseButton.vue'
 
 const projects: object[] = [
   // {
