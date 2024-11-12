@@ -1,5 +1,6 @@
 export const APP_NAME = getEnvVar('VITE_APP_NAME')
 export const APP_PROD_BASE_URL = getEnvVar('VITE_APP_PROD_BASE_URL')
+export const APP_BASE_URL = getEnvVar('VITE_BASE_URL')
 
 // export const FB_API_KEY = getEnvVar('VITE_APP_FB_API_KEY')
 // export const FB_API_URL = getEnvVar('VITE_APP_FB_API_URL')

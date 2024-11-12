@@ -22,7 +22,7 @@
         @blur="onBlur"
         @change="onChange"
         maxlength="255"
-        minlength="15"
+        minlength="3"
       />
 
       <div v-if="$slots.postfix" class="base-input__postfix">

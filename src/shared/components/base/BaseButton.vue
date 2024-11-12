@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { useAttrs } from 'vue'
 
-interface IButton {
+interface Button {
   primary?: boolean
   solid?: boolean
   disabled?: boolean
@@ -32,7 +32,7 @@ const emit = defineEmits(['click'])
 
 const attrs = useAttrs()
 
-const props = withDefaults(defineProps<IButton>(), {
+const props = withDefaults(defineProps<Button>(), {
   disabled: false
 })
 
