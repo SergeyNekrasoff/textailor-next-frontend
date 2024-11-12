@@ -6,7 +6,8 @@
     :class="[
       { 'button-base__disabled': disabled },
       { 'button-base__primary': primary },
-      { 'button-base__solid': solid }
+      { 'button-base__solid': solid },
+      { 'button-base__social': social }
     ]"
     :disabled="disabled"
     @click.stop.prevent="click"
@@ -26,6 +27,7 @@ interface Button {
   primary?: boolean
   solid?: boolean
   disabled?: boolean
+  social?: boolean
 }
 
 const emit = defineEmits(['click'])
@@ -33,7 +35,8 @@ const emit = defineEmits(['click'])
 const attrs = useAttrs()
 
 const props = withDefaults(defineProps<Button>(), {
-  disabled: false
+  disabled: false,
+  social: false
 })
 
 const click = () => {
@@ -75,6 +78,10 @@ const click = () => {
     &:focus {
       @apply cursor-not-allowed bg-divider_light_2;
     }
+  }
+
+  &__social {
+    @apply py-3 flex items-center justify-center;
   }
 }
 </style>

@@ -42,7 +42,7 @@ import { useRefValue } from '@/shared/lib/use/base/useRefValue'
 
 const emit = defineEmits(['update:modelValue', 'blur', 'change'])
 
-interface IBaseInput {
+interface BaseInput {
   modelValue?: string | number
   label?: string
   name?: string
@@ -52,7 +52,7 @@ interface IBaseInput {
   error?: string
 }
 
-const props = withDefaults(defineProps<IBaseInput>(), {
+const props = withDefaults(defineProps<BaseInput>(), {
   modelValue: '',
   inputType: 'text',
   placeholder: ''
@@ -96,7 +96,7 @@ const getValue = (event: Event) => {
 }
 
 .base-input {
-  @apply relative flex flex-col items-start justify-center w-full;
+  @apply relative flex flex-col items-start justify-center w-full text-text_dark_1;
 
   &__wrap {
     @apply flex items-center justify-between w-full bg-gray_dark_4 rounded-md transition duration-100 ease-in-out;
@@ -169,7 +169,13 @@ const getValue = (event: Event) => {
   }
 }
 
-.base-input__field {
+.base-input__field,
+.base-input__field:-webkit-autofill:hover,
+.base-input__field:-webkit-autofill:focus {
+  border-color: var(--vt-c-divider-dark-2);
+  -webkit-box-shadow: 0 0 0px 1000px var(--vt-c-gray-dark-4) inset;
+  transition: background-color 3000s ease-in-out 0s;
+
   &.focus {
     .base-input__field {
       @include inputFocus;

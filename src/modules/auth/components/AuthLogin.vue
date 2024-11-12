@@ -1,23 +1,33 @@
 <template>
-  <form>
-    <BaseFormInput
-      v-model="userForm.username"
-      label="Username"
-      class="mb-8"
-      name="username"
-      placeholder="Username"
-    />
+  <div class="">
+    <BaseButton class="bg-blue_darker mb-10 w-full" :solid="false" :social="true" @click="onLogin">
+      <template #icon>
+        <img :src="getImageUrl('google')" class="w-5 h-5 mr-2" alt="" />
+      </template>
+      Sign in with Google
+    </BaseButton>
 
-    <BaseFormInput
-      v-model="userForm.password"
-      label="Password"
-      class="mb-8"
-      name="password"
-      placeholder="Password"
-    />
+    <div></div>
 
-    <BaseButton class="mb-4" :primary="true" @click="onLogin"> Login </BaseButton>
-  </form>
+    <form class="my-4">
+      <BaseFormInput
+        v-model="userForm.username"
+        class="mb-4"
+        name="username"
+        placeholder="Enter your username"
+      />
+
+      <BaseFormInput
+        v-model="userForm.password"
+        class="mb-4"
+        :inputType="'password'"
+        name="password"
+        placeholder="Password"
+      />
+
+      <BaseButton class="mb-4" :primary="true" @click="onLogin"> Login </BaseButton>
+    </form>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -41,4 +51,10 @@ const onLogin = async () => {
     console.error('Login failed:', error)
   }
 }
+
+const getImageUrl = (iconName: unknown) => {
+  return new URL(`../../../assets/icons/${iconName}.svg`, import.meta.url).href
+}
 </script>
+
+<style lang="scss" scoped></style>
