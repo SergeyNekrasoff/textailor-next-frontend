@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 import { route as loginRoute } from './login'
+import { route as signupRoute } from './signup'
 import { route as dashboardRoute } from './dashboard'
 import { route as chatRoute } from './chat'
 import { route as historyRoute } from './history'
@@ -14,6 +15,7 @@ import { route as notFoundRoute } from './not-found'
 
 export const routes: readonly RouteRecordRaw[] = [
   loginRoute,
+  signupRoute,
   dashboardRoute,
   profileRoute,
   chatRoute,

@@ -12,6 +12,10 @@ export class AppRoutes {
     return getRoute(AppPages.login, {})
   }
 
+  static getSignup() {
+    return getRoute(AppPages.signup, {})
+  }
+
   static getDashboard() {
     return getRoute(AppPages.dashboard, {})
   }

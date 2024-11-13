@@ -1,13 +1,13 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-export const routeName = 'LoginPage'
+export const routeName = 'SignupPage'
 
 export const route: RouteRecordRaw = {
   name: routeName,
-  path: '/login',
-  component: () => import('@/interfaces/auth/pages/LoginPage.vue'),
+  path: '/signup',
+  component: () => import('@/interfaces/auth/pages/SignupPage.vue'),
   meta: {
-    head: 'Login',
+    head: 'Sign Up',
     layout: 'headless'
   }
 }

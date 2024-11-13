@@ -1,18 +1,25 @@
 <template>
   <div class="">
-    <BaseButton class="mb-10 w-full" :solid="true" :social="true" @click="onLoginWithGoogle">
+    <BaseButton class="mb-10 w-full" :solid="true" :social="true" @click="onRegisterWithGoogle">
       <template #icon>
         <img :src="getImageUrl('google')" class="w-5 h-5 mr-2" alt="" />
       </template>
-      Sign in with Google
+      Sign Up with Google
     </BaseButton>
 
     <div class="flex flex-col items-center justify-center mb-4">
       <div class="custom-line"></div>
-      <p class="text-xs font-[400] text-gray_dark_1 px-4 bg-black">Or sign in with your email</p>
+      <p class="text-xs font-[400] text-gray_dark_1 px-4 bg-black">Or sign up with your email</p>
     </div>
 
     <form class="my-4">
+      <BaseFormInput
+        v-model="userForm.email"
+        class="mb-4"
+        name="email"
+        placeholder="Enter your email"
+      />
+
       <BaseFormInput
         v-model="userForm.username"
         class="mb-4"
@@ -28,17 +35,25 @@
         placeholder="Password"
       />
 
-      <BaseButton class="mb-4 w-full bg-blue_darker" :solid="false" :center="true" @click="onLogin">
-        Continue with Email
+      <BaseButton
+        class="mb-4 w-full bg-blue_darker"
+        :solid="false"
+        :center="true"
+        @click="onRegister"
+      >
+        Sign up with Email
       </BaseButton>
     </form>
 
     <div class="flex flex-col items-center justify-center mt-4">
       <p class="text-xs font-[400] text-gray_dark_1 px-4">
-        Don't have an account?
-        <router-link to="/signup" class="text-blue_lighter">Sign up</router-link>
-        to register.
+        Already have an account?
+        <router-link to="/login" class="text-blue_lighter">Login</router-link>
       </p>
+    </div>
+
+    <div class="text-xs font-[400] text-gray_dark_1 mt-12 flex justify-center">
+      By signing up, you agree to receive emails from us.
     </div>
   </div>
 </template>
@@ -48,24 +63,28 @@ import { ref } from 'vue'
 import BaseFormInput from '@/shared/components/base/BaseFormInput.vue'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
 import { AuthService } from '../services/AuthService'
-import { useAuthStore } from '../store/AuthStore'
+// import { useAuthStore } from '../store/AuthStore'
 
-const userForm = ref({ username: '', password: '' })
+const userForm = ref({ username: '', password: '', email: '' })
 const authService = new AuthService()
 
-const onLogin = async () => {
+const onRegister = async () => {
   try {
-    const { data } = await authService.login(userForm.value.username, userForm.value.password)
-    const authStore = useAuthStore()
-
-    authStore.setToken(data.access_token)
+    const response = await authService.register(
+      userForm.value.username,
+      userForm.value.password,
+      userForm.value.email
+    )
+    // const authStore = useAuthStore()
+    console.log(`response: ${JSON.stringify(response)}`)
+    // authStore.setToken(data.access_token)
     // authStore.setUser(response.user)
   } catch (error) {
-    console.error('Login failed:', error)
+    console.error('Register failed:', error)
   }
 }
 
-const onLoginWithGoogle = () => console.log(`Login with Google`)
+const onRegisterWithGoogle = () => console.log(`Register with Google`)
 
 const getImageUrl = (iconName: unknown) => {
   return new URL(`../../../assets/icons/${iconName}.svg`, import.meta.url).href
