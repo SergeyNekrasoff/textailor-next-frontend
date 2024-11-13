@@ -7,7 +7,8 @@
       { 'button-base__disabled': disabled },
       { 'button-base__primary': primary },
       { 'button-base__solid': solid },
-      { 'button-base__social': social }
+      { 'button-base__social': social },
+      { 'button-base__centered': center }
     ]"
     :disabled="disabled"
     @click.stop.prevent="click"
@@ -28,6 +29,7 @@ interface Button {
   solid?: boolean
   disabled?: boolean
   social?: boolean
+  center?: boolean
 }
 
 const emit = defineEmits(['click'])
@@ -35,8 +37,7 @@ const emit = defineEmits(['click'])
 const attrs = useAttrs()
 
 const props = withDefaults(defineProps<Button>(), {
-  disabled: false,
-  social: false
+  disabled: false
 })
 
 const click = () => {
@@ -82,6 +83,10 @@ const click = () => {
 
   &__social {
     @apply py-3 flex items-center justify-center;
+  }
+
+  &__centered {
+    @apply py-3 flex justify-center items-center;
   }
 }
 </style>
