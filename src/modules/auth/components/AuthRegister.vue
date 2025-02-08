@@ -63,7 +63,9 @@ import { ref } from 'vue'
 import BaseFormInput from '@/shared/components/base/BaseFormInput.vue'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
 import { AuthService } from '../services/AuthService'
-// import { useAuthStore } from '../store/AuthStore'
+// import { useRouter } from 'vue-router'
+
+// const router = useRouter()
 
 const userForm = ref({ username: '', password: '', email: '' })
 const authService = new AuthService()
@@ -75,10 +77,10 @@ const onRegister = async () => {
       userForm.value.password,
       userForm.value.email
     )
-    // const authStore = useAuthStore()
-    console.log(`response: ${JSON.stringify(response)}`)
-    // authStore.setToken(data.access_token)
-    // authStore.setUser(response.user)
+
+    console.log(`response: ${response}`)
+
+    // router.push({ path: '/' })
   } catch (error) {
     console.error('Register failed:', error)
   }

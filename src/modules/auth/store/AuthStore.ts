@@ -1,34 +1,45 @@
 import { defineStore } from 'pinia'
-import type { User } from '../types'
+import { ref, computed } from 'vue'
+import type { Ref } from 'vue'
+import AuthService from '../services/AuthService'
 
-export interface AuthState {
-  user: User | null
-  token: string | null
-}
+export const useAuthStore = defineStore('auth', () => {
+  const token: Ref<string | null> = ref(null)
+  const isAuthenticated: Ref<boolean> = ref(false)
 
-export const useAuthStore = defineStore('auth', {
-  state: () =>
-    <AuthState>{
-      user: null,
-      token: null
-    },
+  const login = async (email: string, password: string) => {
+    try {
+      const { data } = await AuthService.login(email, password)
 
-  getters: {
-    isAuthenticated: state => !!state.token && !!state.user
-  },
-
-  actions: {
-    setUser(user: User) {
-      this.user = user
-    },
-
-    setToken(token: string) {
-      this.token = token
-    },
-
-    clearAuth() {
-      this.user = null
-      this.token = null
+      if (data) {
+        token.value = data.access_token
+        isAuthenticated.value = true
+      }
+    } catch (error) {
+      console.error('Login failed:', error)
+      throw error
     }
+  }
+
+  const logout = async () => {
+    await AuthService.logout()
+    isAuthenticated.value = false
+    token.value = null
+  }
+
+  const getToken = (): string | null => {
+    // const token = localStorage.getItem('token')
+    // return !!token
+    return token.value
+  }
+
+  const isAuth = computed(() => !!isAuthenticated.value)
+
+  return {
+    login,
+    logout,
+    getToken,
+    isAuth,
+    token
   }
 })

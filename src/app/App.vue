@@ -15,7 +15,7 @@
     </template>
   </DefaultLayout>
 
-  <HeadlessLayout />
+  <HeadlessLayout v-else />
 
   <BaseContainerModal />
   <!-- <BaseToast /> -->

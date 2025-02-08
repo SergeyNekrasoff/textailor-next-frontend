@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <BaseButton class="mb-10 w-full" :solid="true" :social="true" @click="onLoginWithGoogle">
+    <BaseButton class="mb-10 w-full" :solid="true" :social="true" @click="handleLoginWithGoogle">
       <template #icon>
         <img :src="getImageUrl('google')" class="w-5 h-5 mr-2" alt="" />
       </template>
@@ -13,22 +13,22 @@
     </div>
 
     <form class="my-4">
-      <BaseFormInput
-        v-model="userForm.username"
-        class="mb-4"
-        name="username"
-        placeholder="Enter your username"
-      />
+      <BaseFormInput v-model="email" class="mb-4" name="email" placeholder="Enter your email" />
 
       <BaseFormInput
-        v-model="userForm.password"
+        v-model="password"
         class="mb-4"
         :inputType="'password'"
         name="password"
         placeholder="Password"
       />
 
-      <BaseButton class="mb-4 w-full bg-blue_darker" :solid="false" :center="true" @click="onLogin">
+      <BaseButton
+        class="mb-4 w-full bg-blue_darker"
+        :solid="false"
+        :center="true"
+        @click="handleLogin"
+      >
         Continue with Email
       </BaseButton>
     </form>
@@ -47,25 +47,26 @@
 import { ref } from 'vue'
 import BaseFormInput from '@/shared/components/base/BaseFormInput.vue'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
-import { AuthService } from '../services/AuthService'
 import { useAuthStore } from '../store/AuthStore'
+import { useRouter } from 'vue-router'
 
-const userForm = ref({ username: '', password: '' })
-const authService = new AuthService()
+const authStore = useAuthStore()
+const router = useRouter()
 
-const onLogin = async () => {
+const email = ref('')
+const password = ref('')
+
+const handleLogin = async () => {
   try {
-    const { data } = await authService.login(userForm.value.username, userForm.value.password)
-    const authStore = useAuthStore()
+    await authStore.login(email.value, password.value)
 
-    authStore.setToken(data.access_token)
-    // authStore.setUser(response.user)
+    router.push({ path: '/' })
   } catch (error) {
-    console.error('Login failed:', error)
+    console.error('Login error:', error)
   }
 }
 
-const onLoginWithGoogle = () => console.log(`Login with Google`)
+const handleLoginWithGoogle = () => console.log(`Login with Google`)
 
 const getImageUrl = (iconName: unknown) => {
   return new URL(`../../../assets/icons/${iconName}.svg`, import.meta.url).href

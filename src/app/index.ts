@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
-import { router, store } from './providers'
+import { store } from './providers'
+import router from './providers/router'
 import App from './App.vue'
 // import { ApiUserRepository } from '@/modules/user/repositories/user.repository'
 // import { UserService } from '@/modules/user/store/user.service'

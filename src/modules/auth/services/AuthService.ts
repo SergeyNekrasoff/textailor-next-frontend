@@ -1,26 +1,44 @@
-import axios from 'axios'
-import { APP_BASE_URL } from '@/shared/config'
-// import type { User } from '../types'
+import HttpCLient from '@/shared/httpClient'
 
-export class AuthService {
-  private api = axios.create({
-    baseURL: APP_BASE_URL || 'http://localhost:3000'
-  })
+const pathToLogin = '/auth/login'
+const pathToUsers = '/users'
 
-  public login(username: string, password: string) {
-    return this.api.post('/auth/login', { username, password })
+const authService = new HttpCLient()
+
+class AuthService {
+  public async login(email: string, password: string) {
+    try {
+      const response = await authService.post(pathToLogin, { email, password })
+      return response
+    } catch (error) {
+      console.error('Error login request:', error)
+      throw error
+    }
   }
 
-  public register(username: string, password: string, email: string) {
-    this.api.post('/users', { username, password, email })
+  public async register(username: string, password: string, email: string) {
+    try {
+      const response = await authService.post(pathToUsers, { email, password })
+      return response
+    } catch (error) {
+      console.error('Error register request:', error)
+      throw error
+    }
   }
 
-  public logout(): void {
+  public async hello() {
+    try {
+      const response = await authService.post('/hello', 'test')
+      return response
+    } catch (error) {
+      console.error('Error hello request:', error)
+      throw error
+    }
+  }
+
+  async logout() {
     localStorage.removeItem('token')
   }
-
-  public isAuthenticated(): boolean {
-    const token = localStorage.getItem('token')
-    return !!token
-  }
 }
+
+export default new AuthService()
