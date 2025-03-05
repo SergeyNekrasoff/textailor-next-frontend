@@ -24,25 +24,19 @@
           <DocumentTextIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
           <router-link to="/documents" class="text-lg font-[500] w-full">Documents</router-link>
         </li>
-        <li
+        <!-- <li
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
         >
           <RectangleStackIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
           <router-link to="/templates" class="text-lg font-medium w-full">Templates</router-link>
-        </li>
-        <li
-          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
-        >
-          <ChatBubbleBottomCenterTextIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
-          <router-link to="/chat" class="text-lg font-[500] w-full">Chat</router-link>
-        </li>
+        </li> -->
         <li
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
         >
           <PencilSquareIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
-          <router-link to="/editor" class="text-lg font-[500] w-full">Editor</router-link>
+          <router-link to="/document/2" class="text-lg font-[500] w-full">Editor</router-link>
         </li>
-        <li class="mb-4 mt-4">
+        <!-- <li class="mb-4 mt-4">
           <hr class="text-divider_dark_2" />
         </li>
         <li
@@ -50,7 +44,7 @@
         >
           <DocumentMagnifyingGlassIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
           <router-link to="/history" class="text-lg font-[500] w-full">History</router-link>
-        </li>
+        </li> -->
       </ul>
     </div>
     <div class="flex items-start justify-between w-full">
@@ -119,18 +113,6 @@
             <RectangleStackIcon :size="'size-6'" class="h-6 w-6 text-text_dark_2" />
           </router-link>
         </li>
-        <li
-          class="flex items-center justify-start w-full hover:bg-divider_dark_2 p-2 rounded-md mb-2"
-        >
-          <router-link to="/chat">
-            <ChatBubbleBottomCenterTextIcon :size="'size-6'" class="h-6 w-6 text-text_dark_2" />
-          </router-link>
-        </li>
-        <li class="flex items-center justify-start w-full hover:bg-divider_dark_2 p-2 rounded-md">
-          <router-link to="/chat">
-            <PencilSquareIcon :size="'size-6'" class="h-6 w-6 text-text_dark_2" />
-          </router-link>
-        </li>
       </ul>
     </div>
     <div class="flex items-start justify-between w-full">
@@ -167,13 +149,12 @@ import type { Ref } from 'vue'
 import {
   HomeIcon,
   DocumentTextIcon,
-  RectangleStackIcon,
+  // RectangleStackIcon,
   BookOpenIcon,
   Cog8ToothIcon,
   PlusIcon,
   ChevronRightIcon,
-  DocumentMagnifyingGlassIcon,
-  ChatBubbleBottomCenterTextIcon,
+  // DocumentMagnifyingGlassIcon,
   PencilSquareIcon
   // ArrowLeftIcon,
   // ArrowRightIcon

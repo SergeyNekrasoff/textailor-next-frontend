@@ -62,29 +62,29 @@
 import { ref } from 'vue'
 import BaseFormInput from '@/shared/components/base/BaseFormInput.vue'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
-import { AuthService } from '../services/AuthService'
+// import { AuthService } from '../services/AuthService'
 // import { useRouter } from 'vue-router'
 
 // const router = useRouter()
 
 const userForm = ref({ username: '', password: '', email: '' })
-const authService = new AuthService()
+// const authService = new AuthService()
 
-const onRegister = async () => {
-  try {
-    const response = await authService.register(
-      userForm.value.username,
-      userForm.value.password,
-      userForm.value.email
-    )
+// const onRegister = async () => {
+//   try {
+//     const response = await authService.register(
+//       userForm.value.username,
+//       userForm.value.password,
+//       userForm.value.email
+//     )
 
-    console.log(`response: ${response}`)
+//     console.log(`response: ${response}`)
 
-    // router.push({ path: '/' })
-  } catch (error) {
-    console.error('Register failed:', error)
-  }
-}
+//     // router.push({ path: '/' })
+//   } catch (error) {
+//     console.error('Register failed:', error)
+//   }
+// }
 
 const onRegisterWithGoogle = () => console.log(`Register with Google`)
 

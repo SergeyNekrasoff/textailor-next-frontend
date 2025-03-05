@@ -48,10 +48,6 @@ export class AppRoutes {
     return getRoute(AppPages.UIKit, {})
   }
 
-  static getChat() {
-    return getRoute(AppPages.chat, {})
-  }
-
   static getNotFound() {
     return getRoute(AppPages.notFound, {})
   }

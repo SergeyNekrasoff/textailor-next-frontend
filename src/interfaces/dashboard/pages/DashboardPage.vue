@@ -8,7 +8,7 @@
       <!-- </div> -->
 
       <features />
-      <templates />
+      <!-- <templates /> -->
       <documents />
     </div>
   </div>
@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import features from '../components/DashboardFeatures.vue'
-import templates from '../components/DashboardTemplates.vue'
+// import templates from '../components/DashboardTemplates.vue'
 import documents from '../components/DashboardDocuments.vue'
 // import { BaseCarousel } from '@/shared/ui/carousel'
 </script>

@@ -13,6 +13,7 @@
         ref="input"
         :value="modelValue"
         class="base-input__field"
+        :class="{ 'base-input__field--no-border': !border }"
         :type="inputType"
         :name="name"
         :placeholder="placeholder"
@@ -49,13 +50,15 @@ interface BaseInput {
   isDisabled?: boolean
   placeholder?: string
   inputType?: 'text' | 'password' | 'number' | 'email'
+  border?: boolean
   error?: string
 }
 
 const props = withDefaults(defineProps<BaseInput>(), {
   modelValue: '',
   inputType: 'text',
-  placeholder: ''
+  placeholder: '',
+  border: true
 })
 
 const classes = computed(() => ({
@@ -113,6 +116,14 @@ const getValue = (event: Event) => {
 
   &__field {
     @apply w-full text-text_dark_1 font-light py-2 px-3 rounded-md border border-solid border-divider_dark_2 overflow-hidden;
+
+    &--no-border,
+    &--no-border:hover,
+    &--no-border:focus,
+    &--focus-visible,
+    &:disabled {
+      @apply border-none !important;
+    }
 
     &::placeholder {
       @apply text-text_light_4 text-sm font-light;

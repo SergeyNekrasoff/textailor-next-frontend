@@ -12,7 +12,9 @@
           >
             <div class="flex flex-col items-start justify-between h-full">
               <div class="text-lg">{{ project.name }}</div>
-              <div class="text-xs font-[100] text-gray_light_1">{{ project.content }}</div>
+              <div class="text-xs font-[100] text-gray_light_1">
+                {{ project.content }}
+              </div>
               <div class="text-gray_light_1 text-xs">{{ project.date }}</div>
             </div>
           </router-link>
@@ -35,33 +37,34 @@
 </template>
 
 <script setup lang="ts">
-import { FolderPlusIcon, DocumentPlusIcon } from '../../../shared/components/icons'
+import { FolderPlusIcon, DocumentPlusIcon } from '@/shared/components/icons'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
 
-const projects: object[] = [
-  // {
-  //   id: 1,
-  //   name: '2024-04-10 Untitled (2)',
-  //   content: 'Charge Any Device Fast ​ Description:AnchorCable ...',
-  //   date: 'Created 2 days ago'
-  // },
-  // {
-  //   id: 2,
-  //   name: '2024-04-10 Untitled',
-  //   content: 'Create benefit-focused texts for your purposes. ...',
-  //   date: 'Created 13 hours ago'
-  // },
-  // {
-  //   id: 3,
-  //   name: '2024-03-18 Untitled',
-  //   content: 'As an informed consumer, you are looking for a lu...',
-  //   date: 'Created 3 weeks ago'
-  // },
-  // {
-  //   id: 4,
-  //   name: 'Journey to Dubai',
-  //   content: '',
-  //   date: 'Created 2 days ago'
-  // }
-]
+const projects = []
+// const projects = [
+//   {
+//     id: 1,
+//     name: '2024-04-10 Untitled (2)',
+//     content: 'Charge Any Device Fast ​ Description:AnchorCable ...',
+//     date: 'Created 2 days ago'
+//   },
+//   {
+//     id: 2,
+//     name: '2024-04-10 Untitled',
+//     content: 'Create benefit-focused texts for your purposes. ...',
+//     date: 'Created 13 hours ago'
+//   },
+//   {
+//     id: 3,
+//     name: '2024-03-18 Untitled',
+//     content: 'As an informed consumer, you are looking for a lu...',
+//     date: 'Created 3 weeks ago'
+//   },
+//   {
+//     id: 4,
+//     name: 'Journey to Dubai',
+//     content: '',
+//     date: 'Created 2 days ago'
+//   }
+// ]
 </script>
