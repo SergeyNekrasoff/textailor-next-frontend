@@ -62,11 +62,11 @@
           @open-modal="setCurrentModal"
         />
 
-        <feature-list
+        <!-- <feature-list
           :current-modal="isCurrentModal"
           @add-list="handleList"
           @open-modal="setCurrentModal"
-        />
+        /> -->
 
         <feature-hr
           :current-modal="isCurrentModal"
@@ -126,7 +126,7 @@ const FeatureStrong = defineAsyncComponent(() => import('./features/FeatureStron
 const FeatureQuote = defineAsyncComponent(() => import('./features/FeatureQuote.vue'))
 const FeatureItalic = defineAsyncComponent(() => import('./features/FeatureItalic.vue'))
 const FeatureTextThrough = defineAsyncComponent(() => import('./features/FeatureTextThrough.vue'))
-const FeatureList = defineAsyncComponent(() => import('./features/FeatureList.vue'))
+// const FeatureList = defineAsyncComponent(() => import('./features/FeatureList.vue'))
 const FeatureHr = defineAsyncComponent(() => import('./features/FeatureHr.vue'))
 // const FeaturePrev = defineAsyncComponent(() => import('./features/FeaturePrev.vue'))
 // const FeatureNext = defineAsyncComponent(() => import('./features/FeatureNext.vue'))
@@ -566,24 +566,6 @@ const insertNodeWithCollapse = (
 }
 
 const insertNodeElement = (element: HTMLElement) => {
-  // let selection: Selection | null
-  // selection = window.getSelection()
-
-  // if (selection !== null) {
-  //   selection = selection.getRangeAt(0)
-  //   selection.deleteContents()
-  //   selection.insertNode(element)
-  //   selection.collapseToEnd()
-  //   selection.removeAllRanges()
-
-  //   selection = window.document.createRange()
-  //   selection.selectNode(element)
-  //   selection.addRange(selection)
-  //   selection.collapseToEnd()
-  // }
-
-  // saveSelection()
-
   if (!selection) return
 
   let range = selection.getRangeAt(0)
@@ -1069,288 +1051,288 @@ const handleTextLinkSelection = (value: HTMLAnchorElement): void => {
   insertNodeElement(a)
 }
 
-const handleList = (): void => {
-  if (!selection) return
+// const handleList = (): void => {
+//   if (!selection) return
 
-  const range = selection.getRangeAt(0)
-  const parentNode = selection.anchorNode?.parentNode
-  const htmlContent = (parentNode as HTMLElement).innerHTML
-  const container = range.commonAncestorContainer
+//   const range = selection.getRangeAt(0)
+//   const parentNode = selection.anchorNode?.parentNode
+//   const htmlContent = (parentNode as HTMLElement).innerHTML
+//   const container = range.commonAncestorContainer
 
-  editable.value?.focus()
+//   editable.value?.focus()
 
-  if (
-    (parentNode as HTMLElement).tagName === 'BLOCKQUOTE' ||
-    (parentNode as HTMLElement).tagName === 'STRONG' ||
-    (parentNode as HTMLElement).tagName === 'A' ||
-    (parentNode as HTMLElement).tagName === 'H2' ||
-    (parentNode as HTMLElement).tagName === 'H3' ||
-    (parentNode as HTMLElement).tagName === 'H3' ||
-    (parentNode as HTMLElement).tagName === 'H3' ||
-    (parentNode as HTMLElement).tagName === 'I' ||
-    (parentNode as HTMLElement).tagName === 'S' ||
-    !isFocusedEditor.value
-  ) {
-    return
-  }
+//   if (
+//     (parentNode as HTMLElement).tagName === 'BLOCKQUOTE' ||
+//     (parentNode as HTMLElement).tagName === 'STRONG' ||
+//     (parentNode as HTMLElement).tagName === 'A' ||
+//     (parentNode as HTMLElement).tagName === 'H2' ||
+//     (parentNode as HTMLElement).tagName === 'H3' ||
+//     (parentNode as HTMLElement).tagName === 'H3' ||
+//     (parentNode as HTMLElement).tagName === 'H3' ||
+//     (parentNode as HTMLElement).tagName === 'I' ||
+//     (parentNode as HTMLElement).tagName === 'S' ||
+//     !isFocusedEditor.value
+//   ) {
+//     return
+//   }
 
-  if (
-    (selection.toString().length > 0 &&
-      (selection.anchorNode!.parentNode as HTMLDivElement).tagName === 'DIV' &&
-      (selection.focusNode!.parentNode as HTMLLIElement).tagName === 'LI') ||
-    ((selection.anchorNode!.parentNode as HTMLLIElement).tagName === 'LI' &&
-      (selection.focusNode!.parentNode as HTMLDivElement).tagName === 'DIV')
-  ) {
-    return
-  }
+//   if (
+//     (selection.toString().length > 0 &&
+//       (selection.anchorNode!.parentNode as HTMLDivElement).tagName === 'DIV' &&
+//       (selection.focusNode!.parentNode as HTMLLIElement).tagName === 'LI') ||
+//     ((selection.anchorNode!.parentNode as HTMLLIElement).tagName === 'LI' &&
+//       (selection.focusNode!.parentNode as HTMLDivElement).tagName === 'DIV')
+//   ) {
+//     return
+//   }
 
-  if ((container as HTMLDivElement).tagName === 'DIV') {
-    const ul = document.createElement('ul')
-    const li = document.createElement('li')
-    const zeroSpace = document.createTextNode('\u200b')
-    li.append(zeroSpace)
-    ul.append(li)
+//   if ((container as HTMLDivElement).tagName === 'DIV') {
+//     const ul = document.createElement('ul')
+//     const li = document.createElement('li')
+//     const zeroSpace = document.createTextNode('\u200b')
+//     li.append(zeroSpace)
+//     ul.append(li)
 
-    const content = selection.toString()
-    const textContent = content
-      .split('\n')
-      .map((e: string) => `<li>${e}</li>`)
-      .join('')
+//     const content = selection.toString()
+//     const textContent = content
+//       .split('\n')
+//       .map((e: string) => `<li>${e}</li>`)
+//       .join('')
 
-    if (content.length > 0) {
-      const list = convertStringToHTML(textContent)
-      const ul = document.createElement('ul')
+//     if (content.length > 0) {
+//       const list = convertStringToHTML(textContent)
+//       const ul = document.createElement('ul')
 
-      ul.append(list)
-      range.deleteContents()
-      range.insertNode(ul)
-      range.collapse(false)
+//       ul.append(list)
+//       range.deleteContents()
+//       range.insertNode(ul)
+//       range.collapse(false)
 
-      return
-    }
+//       return
+//     }
 
-    insertNodeWithCollapse(ul, selection, range, true)
+//     insertNodeWithCollapse(ul, selection, range, true)
 
-    return
-  }
+//     return
+//   }
 
-  if (container && isHTMLElement(container) && (container as HTMLUListElement).tagName === 'UL') {
-    const content = selection.toString().replace(/(?:\r\n|\r|\n)/g, '<br />')
+//   if (container && isHTMLElement(container) && (container as HTMLUListElement).tagName === 'UL') {
+//     const content = selection.toString().replace(/(?:\r\n|\r|\n)/g, '<br />')
 
-    if (content.length > 0) {
-      const textContent = convertStringToHTML(content)
+//     if (content.length > 0) {
+//       const textContent = convertStringToHTML(content)
 
-      if (parentNode?.parentNode instanceof Element) {
-        parentNode.parentNode.remove()
-      }
+//       if (parentNode?.parentNode instanceof Element) {
+//         parentNode.parentNode.remove()
+//       }
 
-      range.deleteContents()
-      range.insertNode(textContent)
-      range.collapse(false)
+//       range.deleteContents()
+//       range.insertNode(textContent)
+//       range.collapse(false)
 
-      return
-    } else {
-      const fragment = range.commonAncestorContainer.textContent
-      const textNode = convertStringToHTML(fragment!)
+//       return
+//     } else {
+//       const fragment = range.commonAncestorContainer.textContent
+//       const textNode = convertStringToHTML(fragment!)
 
-      while (parentNode?.parentNode) {
-        const parent = parentNode.parentNode
+//       while (parentNode?.parentNode) {
+//         const parent = parentNode.parentNode
 
-        if (parent && isElement(parent)) {
-          if (parent.tagName === 'UL') {
-            parent.remove()
+//         if (parent && isElement(parent)) {
+//           if (parent.tagName === 'UL') {
+//             parent.remove()
 
-            range.deleteContents()
-            range.insertNode(textNode)
-            range.collapse(true)
+//             range.deleteContents()
+//             range.insertNode(textNode)
+//             range.collapse(true)
 
-            return
-          }
-        }
-      }
-    }
-  }
+//             return
+//           }
+//         }
+//       }
+//     }
+//   }
 
-  if (typeof (container as Element).tagName === 'undefined') {
-    const ul = document.createElement('ul')
-    const li = document.createElement('li')
-    const zeroSpace = document.createTextNode('\u200b')
-    li.append(zeroSpace)
-    ul.append(li)
+//   if (typeof (container as Element).tagName === 'undefined') {
+//     const ul = document.createElement('ul')
+//     const li = document.createElement('li')
+//     const zeroSpace = document.createTextNode('\u200b')
+//     li.append(zeroSpace)
+//     ul.append(li)
 
-    // Concat Lists
-    if ((parentNode as Element).tagName === 'LI') {
-      const content = convertStringToHTML(htmlContent)
-      const fragment = document.createDocumentFragment()
-      const listArray: HTMLElement[] = Array.from(
-        (parentNode?.parentNode as Element).querySelectorAll('li')
-      )
-      const splitIndex = parentNode instanceof HTMLElement ? listArray.indexOf(parentNode) : -1
+//     // Concat Lists
+//     if ((parentNode as Element).tagName === 'LI') {
+//       const content = convertStringToHTML(htmlContent)
+//       const fragment = document.createDocumentFragment()
+//       const listArray: HTMLElement[] = Array.from(
+//         (parentNode?.parentNode as Element).querySelectorAll('li')
+//       )
+//       const splitIndex = parentNode instanceof HTMLElement ? listArray.indexOf(parentNode) : -1
 
-      const ul1 = document.createElement('ul')
-      const ul2 = document.createElement('ul')
+//       const ul1 = document.createElement('ul')
+//       const ul2 = document.createElement('ul')
 
-      for (let i = 0; i < splitIndex; i++) {
-        ul1.appendChild(listArray[i])
-      }
+//       for (let i = 0; i < splitIndex; i++) {
+//         ul1.appendChild(listArray[i])
+//       }
 
-      for (let i = splitIndex + 1; i < listArray.length; i++) {
-        ul2.appendChild(listArray[i])
-      }
+//       for (let i = splitIndex + 1; i < listArray.length; i++) {
+//         ul2.appendChild(listArray[i])
+//       }
 
-      if (parentNode?.parentNode instanceof Element) {
-        parentNode.parentNode.remove()
-      }
+//       if (parentNode?.parentNode instanceof Element) {
+//         parentNode.parentNode.remove()
+//       }
 
-      fragment.append(ul1)
-      fragment.append(content)
-      fragment.append(ul2)
+//       fragment.append(ul1)
+//       fragment.append(content)
+//       fragment.append(ul2)
 
-      range.deleteContents()
-      range.insertNode(fragment)
-      range.collapse(false)
+//       range.deleteContents()
+//       range.insertNode(fragment)
+//       range.collapse(false)
 
-      return
-    } else if (
-      (container.previousSibling as Element)?.tagName === 'UL' ||
-      (container.nextSibling as Element)?.tagName === 'UL'
-    ) {
-      // Attach node li to list
-      const newList = document.createElement('ul')
-      const li = document.createElement('li')
+//       return
+//     } else if (
+//       (container.previousSibling as Element)?.tagName === 'UL' ||
+//       (container.nextSibling as Element)?.tagName === 'UL'
+//     ) {
+//       // Attach node li to list
+//       const newList = document.createElement('ul')
+//       const li = document.createElement('li')
 
-      li.append(container.textContent!)
+//       li.append(container.textContent!)
 
-      const firstListArray: HTMLLIElement[] = Array.from(
-        (container.previousSibling as HTMLLIElement).querySelectorAll('li')
-      )
-      const lastListArray: HTMLLIElement[] = Array.from(
-        (container.nextSibling as HTMLLIElement).querySelectorAll('li')
-      )
+//       const firstListArray: HTMLLIElement[] = Array.from(
+//         (container.previousSibling as HTMLLIElement).querySelectorAll('li')
+//       )
+//       const lastListArray: HTMLLIElement[] = Array.from(
+//         (container.nextSibling as HTMLLIElement).querySelectorAll('li')
+//       )
 
-      // Both lists is not exists
-      if (firstListArray.length === 0 && lastListArray.length === 0) {
-        newList.append(li)
+//       // Both lists is not exists
+//       if (firstListArray.length === 0 && lastListArray.length === 0) {
+//         newList.append(li)
 
-        if (container instanceof Element) container.remove()
-        insertNodeWithCollapse(newList, selection, range, true)
+//         if (container instanceof Element) container.remove()
+//         insertNodeWithCollapse(newList, selection, range, true)
 
-        return
-      }
+//         return
+//       }
 
-      // Both lists is exists
-      if (firstListArray.length > 0 && lastListArray.length > 0) {
-        for (let i = 0; i < firstListArray.length; i++) {
-          newList.appendChild(firstListArray[i].cloneNode(true))
-          newList.append(li)
-        }
+//       // Both lists is exists
+//       if (firstListArray.length > 0 && lastListArray.length > 0) {
+//         for (let i = 0; i < firstListArray.length; i++) {
+//           newList.appendChild(firstListArray[i].cloneNode(true))
+//           newList.append(li)
+//         }
 
-        for (let i = 0; i < lastListArray.length; i++) {
-          newList.appendChild(lastListArray[i].cloneNode(true))
-        }
+//         for (let i = 0; i < lastListArray.length; i++) {
+//           newList.appendChild(lastListArray[i].cloneNode(true))
+//         }
 
-        container.previousSibling!.remove()
-        container.nextSibling!.remove()
+//         container.previousSibling!.remove()
+//         container.nextSibling!.remove()
 
-        if (container instanceof Element) container.remove()
+//         if (container instanceof Element) container.remove()
 
-        range.deleteContents()
-        range.insertNode(newList)
-        range.collapse(false)
+//         range.deleteContents()
+//         range.insertNode(newList)
+//         range.collapse(false)
 
-        return
-      }
+//         return
+//       }
 
-      // First list is exists
-      if (firstListArray.length > 0 && lastListArray.length === 0) {
-        for (let i = 0; i < firstListArray.length; i++) {
-          newList.appendChild(firstListArray[i].cloneNode(true))
-          newList.append(li)
-        }
+//       // First list is exists
+//       if (firstListArray.length > 0 && lastListArray.length === 0) {
+//         for (let i = 0; i < firstListArray.length; i++) {
+//           newList.appendChild(firstListArray[i].cloneNode(true))
+//           newList.append(li)
+//         }
 
-        container.previousSibling!.remove()
-        container.nextSibling!.remove()
-        if (container instanceof Element) container.remove()
+//         container.previousSibling!.remove()
+//         container.nextSibling!.remove()
+//         if (container instanceof Element) container.remove()
 
-        range.deleteContents()
-        range.insertNode(newList)
-        range.collapse(false)
+//         range.deleteContents()
+//         range.insertNode(newList)
+//         range.collapse(false)
 
-        return
-      }
+//         return
+//       }
 
-      // Last list is exists
-      if (lastListArray.length > 0 && firstListArray.length === 0) {
-        newList.append(li)
-        for (let i = 0; i < lastListArray.length; i++) {
-          newList.appendChild(lastListArray[i].cloneNode(true))
-        }
+//       // Last list is exists
+//       if (lastListArray.length > 0 && firstListArray.length === 0) {
+//         newList.append(li)
+//         for (let i = 0; i < lastListArray.length; i++) {
+//           newList.appendChild(lastListArray[i].cloneNode(true))
+//         }
 
-        container.previousSibling!.remove()
-        container.nextSibling!.remove()
-        if (container instanceof Element) container.remove()
+//         container.previousSibling!.remove()
+//         container.nextSibling!.remove()
+//         if (container instanceof Element) container.remove()
 
-        range.deleteContents()
-        range.insertNode(newList)
-        range.collapse(false)
+//         range.deleteContents()
+//         range.insertNode(newList)
+//         range.collapse(false)
 
-        return
-      }
-    } else {
-      // Mark line as li of part list
-      if (container.textContent!.length > 0) {
-        if (
-          (container.previousSibling as HTMLUListElement)?.tagName === 'UL' ||
-          (container.nextSibling as HTMLUListElement)?.tagName === 'UL'
-        ) {
-          const newList = document.createElement('ul')
-          const li = document.createElement('li')
-          li.append(container.textContent!)
+//         return
+//       }
+//     } else {
+//       // Mark line as li of part list
+//       if (container.textContent!.length > 0) {
+//         if (
+//           (container.previousSibling as HTMLUListElement)?.tagName === 'UL' ||
+//           (container.nextSibling as HTMLUListElement)?.tagName === 'UL'
+//         ) {
+//           const newList = document.createElement('ul')
+//           const li = document.createElement('li')
+//           li.append(container.textContent!)
 
-          const firstListArray: HTMLLIElement[] = Array.from(
-            (container.previousSibling as HTMLLIElement).querySelectorAll('li')
-          )
-          const secondListArray: HTMLLIElement[] = Array.from(
-            (container.nextSibling as HTMLLIElement).querySelectorAll('li')
-          )
+//           const firstListArray: HTMLLIElement[] = Array.from(
+//             (container.previousSibling as HTMLLIElement).querySelectorAll('li')
+//           )
+//           const secondListArray: HTMLLIElement[] = Array.from(
+//             (container.nextSibling as HTMLLIElement).querySelectorAll('li')
+//           )
 
-          for (let i = 0; i < firstListArray.length; i++) {
-            newList.appendChild(firstListArray[i].cloneNode(true))
-            newList.append(li)
-          }
+//           for (let i = 0; i < firstListArray.length; i++) {
+//             newList.appendChild(firstListArray[i].cloneNode(true))
+//             newList.append(li)
+//           }
 
-          for (let i = 0; i < secondListArray.length; i++) {
-            newList.appendChild(secondListArray[i].cloneNode(true))
-          }
+//           for (let i = 0; i < secondListArray.length; i++) {
+//             newList.appendChild(secondListArray[i].cloneNode(true))
+//           }
 
-          container.previousSibling!.remove()
-          container.nextSibling!.remove()
-          if (container instanceof Element) container.remove()
+//           container.previousSibling!.remove()
+//           container.nextSibling!.remove()
+//           if (container instanceof Element) container.remove()
 
-          range.deleteContents()
-          range.insertNode(newList)
-          range.collapse(false)
+//           range.deleteContents()
+//           range.insertNode(newList)
+//           range.collapse(false)
 
-          return
-        } else {
-          const newList = document.createElement('ul')
-          const li = document.createElement('li')
+//           return
+//         } else {
+//           const newList = document.createElement('ul')
+//           const li = document.createElement('li')
 
-          li.append(container.textContent!)
-          newList.append(li)
+//           li.append(container.textContent!)
+//           newList.append(li)
 
-          if (container instanceof Element) container.remove()
-          insertNodeWithCollapse(newList, selection, range, true)
+//           if (container instanceof Element) container.remove()
+//           insertNodeWithCollapse(newList, selection, range, true)
 
-          return
-        }
-      } else {
-        insertNodeWithCollapse(ul, selection, range, true)
-        return
-      }
-    }
-  }
-}
+//           return
+//         }
+//       } else {
+//         insertNodeWithCollapse(ul, selection, range, true)
+//         return
+//       }
+//     }
+//   }
+// }
 
 const handleHr = (): void => {
   const hr = document.createElement('hr')
@@ -1406,7 +1388,6 @@ watch(focused, focused => {
     disableEditor.value = true
   }
 })
-
 watch(wordCount, value => emit('word-count', value))
 watch(characterCount, value => emit('character-count', value))
 
@@ -1415,17 +1396,10 @@ onClickOutside(wrapper, close)
 onMounted(() => {
   if (!editable.value) return
   // trackChanges(editable.value)
-
-  // observerWordCount.value.observe(editable.value, {
-  //   childList: true,
-  //   subtree: true,
-  //   characterData: true
-  // })
 })
 
 onUnmounted(() => {
   // cleanup()
-  // observerWordCount.value.disconnect()
 })
 </script>
 

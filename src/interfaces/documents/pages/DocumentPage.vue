@@ -5,24 +5,20 @@
         <div class="flex flex-col items-center justify-center pt-48 p-4">
           <ChatBubbleLeftEllipsisIcon :size="'size-24'" />
           <div class="text-4xl font-semibold mb-4">Welcome to Chat</div>
-          <div class="text-sm font-[400] text-gray_light_1 text-center w-2/3">
+          <div class="text-sm font-[400] text-gray_light_1 text-center mb-5 w-[64%]">
             Get started by writing a task and Chat can do the rest. Not sure where to start? Check
             out the Prompt Library for inspiration.
           </div>
+          <div class="flex flex-row flex-wrap items-start justify-start w-[64%]">
+            <div class="chat-toggle-pill">Freud vs. Jung</div>
+            <div class="chat-toggle-pill">Hacker News latest</div>
+            <div class="chat-toggle-pill">Best omakase in SF</div>
+            <div class="chat-toggle-pill">How has AMD been gaining against Intel?</div>
+            <div class="chat-toggle-pill">How does the Tesla FSD subscription work?</div>
+          </div>
         </div>
         <div class="w-full p-4">
-          <BaseFormInput
-            class="chat-input"
-            :model-value="inputValue"
-            :name="'search'"
-            :input-type="'text'"
-            :is-disabled="isDisabled"
-            :border="false"
-            placeholder="Ask anything..."
-            @update:model-value="handleChange"
-            @blur="handleBlur"
-          />
-          <div class="flex items-center justify-end">models</div>
+          <PromptEditor />
         </div>
       </div>
     </div>
@@ -33,7 +29,7 @@
         :placeholder="'Start typing, copy or paste to get started...'"
         @word-count="setWordCount"
         @character-count="setCharacterCount"
-        @send="save"
+        @send="handleContent"
       />
     </div>
     <div
@@ -51,18 +47,13 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { ChatBubbleLeftEllipsisIcon } from '@/shared/components/icons'
 import BaseEditor from '@/modules/editor/components/BaseEditor.vue'
-import BaseFormInput from '@/shared/components/base/BaseFormInput.vue'
+import PromptEditor from '@/interfaces/documents/components/PromptEditor.vue'
 import { EDITOR_MODES } from '@/modules/editor/types'
 
-const inputValue: Ref<string> = ref('')
-const isDisabled: Ref<boolean> = ref(false)
 const wordCount: Ref<number> = ref(0)
 const characterCount: Ref<number> = ref(0)
 
-const handleChange = () => console.log(`handle change`)
-const handleBlur = () => console.log(`handle blur`)
-
-const save = (value: unknown) => {
+const handleContent = (value: unknown) => {
   console.log(`content: ${value}`)
 }
 
@@ -75,7 +66,7 @@ const setCharacterCount = (value: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" setup>
 .chat {
   @apply col-span-4 border-r border-divider_dark_2 min-w-[96px] z-10;
   background-color: var(--vt-c-bg);
@@ -86,9 +77,21 @@ const setCharacterCount = (value: number) => {
   }
 }
 
+.chat-toggle-pill {
+  @apply cursor-pointer mr-2 mb-2 bg-indigo_soft rounded-lg flex items-center justify-center p-2 text-xs;
+  transition: transform 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-1.5px);
+  }
+}
+
 .chat-input {
+  @apply flex items-start justify-start;
+
   .base-input__wrap {
-    height: 60px !important;
+    height: 90px !important;
   }
 }
 

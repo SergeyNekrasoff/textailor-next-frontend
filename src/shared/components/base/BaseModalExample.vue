@@ -45,8 +45,9 @@ onClickOutside(modalRef, () => {
 
 <style lang="scss" scoped>
 .modal {
-  @apply fixed inset-x-0 inset-y-0 z-50;
-  background: rgba(0, 0, 0, 0.8);
+  @apply fixed inset-x-0 inset-y-0 z-[100];
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
 
   &__inner {
     @apply flex flex-col justify-between items-center gap-1 bg-black_mute w-[620px] min-h-[180px] max-h-[420px] absolute inset-1/2 -translate-y-1/2 -translate-x-1/2 rounded-lg p-6;

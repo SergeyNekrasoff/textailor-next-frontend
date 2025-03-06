@@ -26,7 +26,7 @@
       <p class="text-xl font-[400] mb-1">No documents found</p>
       <span class="text-xs font-[400] text-gray_dark_1">Get started by creating new document</span>
 
-      <BaseButton class="mt-6 bg-text_dark_4">
+      <BaseButton class="mt-6 bg-text_dark_4" @click="goToCreateDocument">
         <template v-slot:icon>
           <DocumentPlusIcon :size="'size-6'" class="h-4 w-4 mr-2 text-text_dark_2" />
         </template>
@@ -37,8 +37,11 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { FolderPlusIcon, DocumentPlusIcon } from '@/shared/components/icons'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
+
+const router = useRouter()
 
 const projects = []
 // const projects = [
@@ -67,4 +70,10 @@ const projects = []
 //     date: 'Created 2 days ago'
 //   }
 // ]
+const goToCreateDocument = () => {
+  router.push({
+    name: 'DocumentPage',
+    params: { id: '2' }
+  })
+}
 </script>

@@ -50,10 +50,6 @@
     <div class="flex items-start justify-between w-full">
       <ul class="navigation__list">
         <li class="text-xs py-2 text-text_dark_3">Settings</li>
-        <li class="flex items-center justify-start w-full py-2 px-2 rounded-md">
-          <BookOpenIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
-          242 words used
-        </li>
         <li
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
         >
@@ -150,7 +146,6 @@ import {
   HomeIcon,
   DocumentTextIcon,
   // RectangleStackIcon,
-  BookOpenIcon,
   Cog8ToothIcon,
   PlusIcon,
   ChevronRightIcon,
@@ -163,16 +158,18 @@ import { useModal } from '@/shared/lib/use/useModal'
 
 const modal = useModal()
 
+const BaseToast = defineAsyncComponent(() => import('@/shared/components/base/BaseToast.vue'))
 const BaseModalExmaple = defineAsyncComponent(
   () => import('@/shared/components/base/BaseModalExample.vue')
 )
-const BaseToast = defineAsyncComponent(() => import('@/shared/components/base/BaseToast.vue'))
+
+const collapsed: Ref<boolean> = ref(false)
+
+// const toggle = () => collapsed.value = !collapsed.value
 
 const openModal = async () => {
   modal.show({ component: BaseModalExmaple })
 }
-
-const collapsed: Ref<boolean> = ref(false)
 </script>
 
 <style lang="scss">
