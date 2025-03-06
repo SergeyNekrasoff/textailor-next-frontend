@@ -113,10 +113,11 @@
 import { defineAsyncComponent, ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import type { Ref } from 'vue'
 import type { ConfigEditor } from '../types'
-import { CONFIG_IMAGE, EDITOR_MODES, EDITOR_SUBMITS } from '../types'
+import { CONFIG_IMAGE, EDITOR_MODES } from '../types'
 import { useFocus, onClickOutside } from '@vueuse/core'
 import { usePastePlainText } from '../composables/usePastePlainText'
 import { useWordCount } from '../composables/useWordCount'
+import { useContentEditable } from '../composables/useContentEditable'
 // import { useTrackingChanges } from '../composables/useTrackingChanges'
 
 const FeatureH2 = defineAsyncComponent(() => import('./features/FeatureH2.vue'))
@@ -139,11 +140,11 @@ const { handlePaste } = usePastePlainText()
 const props = withDefaults(defineProps<ConfigEditor>(), {
   mode: EDITOR_MODES.BASE,
   placeholder: 'default',
-  typeSubmit: 'none',
+  submit: false,
   disabled: false
 })
 
-const emit = defineEmits(['click', 'send', 'word-count', 'character-count'])
+const emit = defineEmits(['click', 'send', 'word-count', 'character-count', 'editable-content'])
 
 const wrapper: Ref<HTMLDivElement | null> = ref(null)
 const editable: Ref<HTMLElement | null> = ref(null)
@@ -161,6 +162,7 @@ const disableEditor: Ref<boolean> = ref(false)
 
 const { focused } = useFocus(editable)
 const { wordCount, characterCount } = useWordCount(editable)
+const { textContent } = useContentEditable(editable)
 
 // const click = () => {
 //   if (!props.disabled) {
@@ -1369,6 +1371,7 @@ const close = () => {
 }
 
 const sendHTMLContent = () => {
+  console.log(`call send html content`)
   emit('send', editable.value?.innerHTML)
   close()
   editable.value = null
@@ -1379,7 +1382,7 @@ const getStringHTMLContent = computed(() => {
 })
 
 const isAdvancedModeEditor = computed(() => props.mode === EDITOR_MODES.ADVANCED)
-const hasButton = computed(() => props.typeSubmit === EDITOR_SUBMITS.BUTTON)
+const hasButton = computed(() => props.submit)
 
 watch(focused, focused => {
   if (focused) {
@@ -1390,6 +1393,7 @@ watch(focused, focused => {
 })
 watch(wordCount, value => emit('word-count', value))
 watch(characterCount, value => emit('character-count', value))
+watch(textContent, value => emit('editable-content', value))
 
 onClickOutside(wrapper, close)
 

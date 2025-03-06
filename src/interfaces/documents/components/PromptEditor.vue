@@ -16,7 +16,7 @@
         class="prompt-editor"
         :mode="EDITOR_MODES.BASE"
         :placeholder="'Ask AI anything...'"
-        @send="handlePrompt"
+        @editable-content="handlePrompt"
       />
       <div class="p-2 flex items-center justify-between w-full">
         <div class="flex items-center justify-start">
@@ -54,8 +54,8 @@
           </BaseSelect>
           <BaseButton
             class="button-base bg-indigo ml-5"
-            :class="{ 'cursor-not-allowed': true }"
-            :disabled="true"
+            :class="!hasContent ? 'cursor-not-allowed' : 'cursor-pointer'"
+            :disabled="!hasContent"
             @click="sendPromptRequest"
           >
             <template v-slot:icon>
@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
 import BaseEditor from '@/modules/editor/components/BaseEditor.vue'
 import BaseSelect from '@/shared/components/base/BaseSelect.vue'
@@ -80,6 +80,7 @@ import { EDITOR_MODES, AI_MODELS_ENTITY, SEARCH_STATUSES } from '@/modules/edito
 const selectedAiModel: Ref<number | null> = ref(AI_MODELS_ENTITY[0].id)
 const selectedSearchMode: Ref<number | null> = ref(SEARCH_STATUSES[0].id)
 const aiMode: Ref<number> = ref(0)
+const hasContent: Ref<boolean> = ref(false)
 
 const handleModelSelect = (value: string | number) => {
   console.log(`value: ${value}`)
@@ -89,8 +90,12 @@ const handleSearchModeSelect = (value: string | number) => {
   console.log(`value: ${value}`)
 }
 
-const handlePrompt = (value: unknown) => {
-  console.log(`prompt: ${value}`)
+const handlePrompt = (value: string) => {
+  if (value) {
+    hasContent.value = true
+  } else {
+    hasContent.value = false
+  }
 }
 
 const setModeAI = (value: number) => {
@@ -100,6 +105,8 @@ const setModeAI = (value: number) => {
 const sendPromptRequest = () => {
   console.log(`send prompt request`)
 }
+
+onMounted(() => {})
 </script>
 
 <style lang="scss" setup>

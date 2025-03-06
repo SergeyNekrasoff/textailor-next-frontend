@@ -71,4 +71,4 @@ class HttpClient {
   }
 }
 
-export default HttpClient
+export { HttpClient }

@@ -9,12 +9,13 @@
             Get started by writing a task and Chat can do the rest. Not sure where to start? Check
             out the Prompt Library for inspiration.
           </div>
-          <div class="flex flex-row flex-wrap items-start justify-start w-[64%]">
-            <div class="chat-toggle-pill">Freud vs. Jung</div>
-            <div class="chat-toggle-pill">Hacker News latest</div>
-            <div class="chat-toggle-pill">Best omakase in SF</div>
-            <div class="chat-toggle-pill">How has AMD been gaining against Intel?</div>
-            <div class="chat-toggle-pill">How does the Tesla FSD subscription work?</div>
+          <template v-if="loadingNews || news.length === 0">
+            <BarsLoader />
+          </template>
+          <div v-else class="flex flex-row flex-wrap items-start justify-start w-[64%]">
+            <div v-for="item in news" :key="item.id" class="chat-toggle-pill">
+              {{ item.text }} <ArrowTopRightOnSquareIcon :size="'size-4'" class="ml-1" />
+            </div>
           </div>
         </div>
         <div class="w-full p-4">
@@ -44,11 +45,18 @@
 
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { ref } from 'vue'
-import { ChatBubbleLeftEllipsisIcon } from '@/shared/components/icons'
+import { onMounted, ref } from 'vue'
+import { ChatBubbleLeftEllipsisIcon, ArrowTopRightOnSquareIcon } from '@/shared/components/icons'
 import BaseEditor from '@/modules/editor/components/BaseEditor.vue'
+import BarsLoader from '@/shared/components/base/BarsLoader.vue'
 import PromptEditor from '@/interfaces/documents/components/PromptEditor.vue'
 import { EDITOR_MODES } from '@/modules/editor/types'
+import { useChatStore } from '@/modules/ai/store/chat'
+import { storeToRefs } from 'pinia'
+
+const apiChatStore = useChatStore()
+const { getNewsTitles } = useChatStore()
+const { news, loadingNews } = storeToRefs(apiChatStore)
 
 const wordCount: Ref<number> = ref(0)
 const characterCount: Ref<number> = ref(0)
@@ -64,6 +72,16 @@ const setWordCount = (value: number) => {
 const setCharacterCount = (value: number) => {
   characterCount.value = value
 }
+
+onMounted(async () => {
+  await getNewsTitles({
+    prompt:
+      'create top 5 modern and shorten headlines for topics in tech, cryptocurrency, software, startups, scientific research to explore',
+    model: 'gpt-3.5-turbo',
+    maxTokens: 100,
+    temperature: 1
+  })
+})
 </script>
 
 <style lang="scss" setup>
@@ -78,9 +96,8 @@ const setCharacterCount = (value: number) => {
 }
 
 .chat-toggle-pill {
-  @apply cursor-pointer mr-2 mb-2 bg-indigo_soft rounded-lg flex items-center justify-center p-2 text-xs;
+  @apply cursor-pointer bg-gray_dark_3 border border-solid border-divider_light_2 rounded-md mr-2 mb-2 flex items-center justify-center p-2 text-xs;
   transition: transform 0.2s ease-in-out;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   &:hover {
     transform: translateY(-1.5px);
