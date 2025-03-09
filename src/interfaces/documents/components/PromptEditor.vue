@@ -5,7 +5,7 @@
         v-model="selectedAiModel"
         :options="AI_MODELS_ENTITY"
         :searchable="true"
-        :placeholder="AI_MODELS_ENTITY[0].label"
+        :placeholder="AI_MODELS_ENTITY[2].label"
         @update:modelValue="handleModelSelect"
       />
     </div>
@@ -22,7 +22,7 @@
         <div class="flex items-center justify-start">
           <BaseButton
             class="button-base cursor-pointer mr-2"
-            :class="{ 'bg-divider_dark_2': aiMode === 1 }"
+            :class="{ 'bg-divider_dark_2': temperature === 1 }"
             @click="setModeAI(1)"
           >
             <template v-slot:icon>
@@ -31,14 +31,24 @@
             <span class="button__text text-xs">Depth</span>
           </BaseButton>
           <BaseButton
-            class="button-base cursor-pointer"
-            :class="{ 'bg-divider_dark_2': aiMode === 0 }"
+            class="button-base cursor-pointer mr-2"
+            :class="{ 'bg-divider_dark_2': temperature === 0 }"
             @click="setModeAI(0)"
           >
             <template v-slot:icon>
               <BoltIcon :size="'size-4'" class="text-yellow_darker mr-1" />
             </template>
             <span class="button__text text-xs">Speed</span>
+          </BaseButton>
+          <BaseButton
+            class="button-base cursor-pointer"
+            :class="{ 'bg-divider_dark_2': temperature === 0.5 }"
+            @click="setModeAI(0.5)"
+          >
+            <template v-slot:icon>
+              <AdjustmentsVerticalIcon :size="'size-4'" class="text-green_darker mr-1" />
+            </template>
+            <span class="button__text text-xs">Balance</span>
           </BaseButton>
         </div>
         <div class="flex items-center justify-end">
@@ -53,13 +63,14 @@
             </template>
           </BaseSelect>
           <BaseButton
-            class="button-base bg-indigo ml-5"
+            class="button-base bg-blue_dark ml-5"
             :class="!hasContent ? 'cursor-not-allowed' : 'cursor-pointer'"
             :disabled="!hasContent"
             @click="sendPromptRequest"
           >
             <template v-slot:icon>
-              <ArrowUpIcon :size="'size-4'" class="text-white_soft" />
+              <SpinnerLoader v-if="loadingContent" size="sm" />
+              <ArrowUpIcon v-else :size="'size-4'" class="text-white_soft" />
             </template>
           </BaseButton>
         </div>
@@ -74,13 +85,27 @@ import type { Ref } from 'vue'
 import BaseEditor from '@/modules/editor/components/BaseEditor.vue'
 import BaseSelect from '@/shared/components/base/BaseSelect.vue'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
-import { BoltIcon, CpuChipIcon, ArrowUpIcon, GlobeAltIcon } from '@/shared/components/icons'
+import SpinnerLoader from '@/shared/components/base/SpinnerLoader.vue'
+import {
+  BoltIcon,
+  CpuChipIcon,
+  ArrowUpIcon,
+  GlobeAltIcon,
+  AdjustmentsVerticalIcon
+} from '@/shared/components/icons'
 import { EDITOR_MODES, AI_MODELS_ENTITY, SEARCH_STATUSES } from '@/modules/editor/types'
+import { useChatStore } from '@/modules/ai/store/chat'
+import { storeToRefs } from 'pinia'
 
-const selectedAiModel: Ref<number | null> = ref(AI_MODELS_ENTITY[0].id)
+const apiChatStore = useChatStore()
+const { getGenerateContent } = useChatStore()
+const { loadingContent } = storeToRefs(apiChatStore)
+
+const selectedAiModel: Ref<number | null> = ref(AI_MODELS_ENTITY[2].id)
 const selectedSearchMode: Ref<number | null> = ref(SEARCH_STATUSES[0].id)
-const aiMode: Ref<number> = ref(0)
+const temperature: Ref<number> = ref(0)
 const hasContent: Ref<boolean> = ref(false)
+const textContent: Ref<string> = ref('')
 
 const handleModelSelect = (value: string | number) => {
   console.log(`value: ${value}`)
@@ -92,18 +117,27 @@ const handleSearchModeSelect = (value: string | number) => {
 
 const handlePrompt = (value: string) => {
   if (value) {
+    textContent.value = value
     hasContent.value = true
   } else {
+    textContent.value = ''
     hasContent.value = false
   }
 }
 
 const setModeAI = (value: number) => {
-  aiMode.value = value
+  temperature.value = value
 }
 
 const sendPromptRequest = () => {
-  console.log(`send prompt request`)
+  const model = AI_MODELS_ENTITY.find(model => model.id === selectedAiModel.value)?.label
+
+  getGenerateContent({
+    prompt: textContent.value,
+    model: model,
+    maxTokens: 2000,
+    temperature: temperature.value
+  })
 }
 
 onMounted(() => {})

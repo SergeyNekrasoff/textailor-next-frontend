@@ -141,7 +141,8 @@ const props = withDefaults(defineProps<ConfigEditor>(), {
   mode: EDITOR_MODES.BASE,
   placeholder: 'default',
   submit: false,
-  disabled: false
+  disabled: false,
+  deliveryContent: ''
 })
 
 const emit = defineEmits(['click', 'send', 'word-count', 'character-count', 'editable-content'])
@@ -1381,6 +1382,8 @@ const getStringHTMLContent = computed(() => {
   return editable.value?.textContent
 })
 
+const getDeliveredContent = computed(() => props.deliveryContent)
+
 const isAdvancedModeEditor = computed(() => props.mode === EDITOR_MODES.ADVANCED)
 const hasButton = computed(() => props.submit)
 
@@ -1394,6 +1397,23 @@ watch(focused, focused => {
 watch(wordCount, value => emit('word-count', value))
 watch(characterCount, value => emit('character-count', value))
 watch(textContent, value => emit('editable-content', value))
+watch(getDeliveredContent, value => {
+  if (value.length > 0) {
+    const textNode = document.createTextNode(value)
+
+    if (!selection) return
+
+    editable.value?.focus()
+
+    const range = selection.getRangeAt(0)
+
+    range.deleteContents()
+    range.insertNode(textNode)
+    range.collapse(false)
+
+    return
+  }
+})
 
 onClickOutside(wrapper, close)
 

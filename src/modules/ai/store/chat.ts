@@ -13,16 +13,41 @@ interface Response {
   data: string
 }
 
+interface ResponseGeneratedData {
+  title: string
+  subtitle?: string
+  abstract?: string
+  content: string | string[]
+}
+
 export const useChatStore = defineStore('chat', () => {
   const news: Ref<ListItem[]> = ref([])
+  const responseChat: Ref<ResponseGeneratedData | null> = ref(null)
   const loadingNews: Ref<boolean> = ref(false)
+  const loadingContent: Ref<boolean> = ref(false)
 
   const getGenerateContent = async (payload: GenerateChatDto) => {
     try {
-      const response = await chatService.generateResponse(payload)
+      loadingContent.value = true
+      const response = (await chatService.generateResponse(payload)) as Response
 
-      console.log(`response: ${JSON.stringify(response)}`)
+      if (!response) return
+
+      await formatResponseDataToObject(response.data, payload?.prompt)
+        .then(response => {
+          responseChat.value = {
+            ...responseChat.value,
+            title: response.title,
+            subtitle: response.subtitle,
+            abstract: response.abstract,
+            content: response.content
+          }
+        })
+        .catch(error => console.error(error))
+
+      loadingContent.value = false
     } catch (error) {
+      loadingContent.value = false
       return (error as AxiosError).response
     }
   }
@@ -34,7 +59,7 @@ export const useChatStore = defineStore('chat', () => {
 
       if (!response) return
 
-      news.value = formatStringToHtml(response.data)
+      news.value = formatSpecificDataToObject(response.data)
       loadingNews.value = false
     } catch (error) {
       loadingNews.value = false
@@ -42,7 +67,7 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  const formatStringToHtml = (data: string) => {
+  const formatSpecificDataToObject = (data: string) => {
     return data
       .split('\n')
       .map((line: string) => {
@@ -58,10 +83,36 @@ export const useChatStore = defineStore('chat', () => {
       .filter((item): item is ListItem => item !== null)
   }
 
+  const formatResponseDataToObject = async (
+    data: string,
+    title: string
+  ): Promise<ResponseGeneratedData> => {
+    return new Promise((resolve, reject) => {
+      try {
+        const sections = data.split('\n\n')
+
+        const result = {
+          title: title,
+          subtitle: sections[0]?.startsWith('Title: ') ? sections[0].replace('Title: ', '') : '',
+          abstract: sections[1]?.startsWith('Abstract: ')
+            ? sections[1].replace('Abstract: ', '')
+            : '',
+          content: sections
+        }
+
+        resolve(result)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
   return {
     getGenerateContent,
     getNewsTitles,
     news,
-    loadingNews
+    loadingNews,
+    loadingContent,
+    responseChat
   }
 })

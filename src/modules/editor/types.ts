@@ -9,6 +9,7 @@ export interface ConfigEditor {
   placeholder?: string
   submit?: boolean
   disabled?: boolean
+  deliveryContent: string
 }
 
 export const EDITOR_MODES = {

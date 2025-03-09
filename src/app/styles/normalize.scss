@@ -215,18 +215,18 @@ html {
 
 // scrollbar
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 4px;
+  height: 4px;
   background-color: transparent;
 
   &-track {
-    background-color: transparent;
-    border-radius: 5px;
+    background-color: theme('colors.divider_light_2');
+    border-radius: 2px;
   }
 
   &-thumb {
-    background-color: #a6b2c3;
-    border-radius: 5px;
+    background-color: theme('colors.text_dark_2');
+    border-radius: 2px;
   }
 
   &-corner {
