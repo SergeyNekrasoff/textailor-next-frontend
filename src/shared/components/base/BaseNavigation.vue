@@ -22,7 +22,9 @@
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
         >
           <DocumentTextIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
-          <router-link to="/documents" class="text-lg font-[500] w-full">Documents</router-link>
+          <router-link to="/documents" class="text-lg font-[500] w-[150px] pl-1">
+            Documents
+          </router-link>
         </li>
         <!-- <li
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
@@ -33,8 +35,10 @@
         <li
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
         >
-          <ChatBubbleBottomCenterTextIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
-          <router-link to="/document/2" class="text-lg font-[500] w-full">Chat</router-link>
+          <DocumentPlusIcon :size="'size-6'" class="h-5 w-5 text-text_dark_2" />
+          <button type="button" class="text-lg font-[500] w-[150px]" @click="openCreateDocModal">
+            New document
+          </button>
         </li>
         <!-- <li class="mb-4 mt-4">
           <hr class="text-divider_dark_2" />
@@ -140,6 +144,8 @@
 </template>
 
 <script setup lang="ts">
+const BaseToast = defineAsyncComponent(() => import('@/shared/components/base/BaseToast.vue'))
+
 import { defineAsyncComponent, ref } from 'vue'
 import type { Ref } from 'vue'
 import {
@@ -148,24 +154,15 @@ import {
   Cog8ToothIcon,
   PlusIcon,
   ChevronRightIcon,
-  ChatBubbleBottomCenterTextIcon
+  DocumentPlusIcon
 } from '@/shared/components/icons'
-import { useModal } from '@/shared/lib/use/useModal'
+import { useCreateDocModal } from '@/modules/documents/composables/useCreateDocModal'
 
-const modal = useModal()
-
-const BaseToast = defineAsyncComponent(() => import('@/shared/components/base/BaseToast.vue'))
-const BaseModalExmaple = defineAsyncComponent(
-  () => import('@/shared/components/base/BaseModalExample.vue')
-)
+const { openCreateDocModal } = useCreateDocModal()
 
 const collapsed: Ref<boolean> = ref(false)
 
 // const toggle = () => collapsed.value = !collapsed.value
-
-const openModal = async () => {
-  modal.show({ component: BaseModalExmaple })
-}
 </script>
 
 <style lang="scss">

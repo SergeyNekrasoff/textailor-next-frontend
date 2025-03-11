@@ -107,9 +107,17 @@ export const useChatStore = defineStore('chat', () => {
     })
   }
 
+  const clearResponse = async (): Promise<null> => {
+    return new Promise(resolve => {
+      responseChat.value = null
+      resolve(null)
+    })
+  }
+
   return {
     getGenerateContent,
     getNewsTitles,
+    clearResponse,
     news,
     loadingNews,
     loadingContent,

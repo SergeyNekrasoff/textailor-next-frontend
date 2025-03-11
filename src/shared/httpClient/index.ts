@@ -66,7 +66,7 @@ class HttpClient {
     return this.instance.put(url, data, config)
   }
 
-  public delete<T>(url: string, config: AxiosRequestConfig): Promise<T> {
+  public delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.delete(url, config)
   }
 }
