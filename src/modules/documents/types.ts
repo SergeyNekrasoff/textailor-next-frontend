@@ -3,8 +3,10 @@ export interface DocumentRequest {
   content: string
 }
 
-export interface UpdateDocumentRequest extends DocumentRequest {
-  id: string
+export interface UpdateDocumentRequest {
+  id?: number | undefined
+  title?: string | undefined
+  content: string
 }
 
 export interface DocumentResponseData {
@@ -17,6 +19,6 @@ export interface DocumentResponseData {
 
 export interface DocumentResponse<T> {
   data: T
-  status: number
-  message: string
+  status?: number
+  message?: string
 }

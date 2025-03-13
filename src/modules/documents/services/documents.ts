@@ -14,7 +14,7 @@ export const DocumentsService = {
     }
   },
 
-  async getDocumentById(id: string): Promise<DocumentResponseData | unknown> {
+  async getDocumentById(id: number): Promise<DocumentResponseData | unknown> {
     try {
       const response = (await httpClient.get(`/documents/${id}`)) as DocumentResponseData
       return response
@@ -34,7 +34,7 @@ export const DocumentsService = {
 
   async updateDocument(payload: UpdateDocumentRequest): Promise<DocumentResponseData | unknown> {
     try {
-      const response = (await httpClient.put(`/documents/${payload.id}`, {
+      const response = (await httpClient.patch(`/documents/${payload.id}`, {
         title: payload.title,
         content: payload.content
       })) as DocumentResponseData

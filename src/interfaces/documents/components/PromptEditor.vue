@@ -69,7 +69,7 @@
             @click="sendPromptRequest"
           >
             <template v-slot:icon>
-              <SpinnerLoader v-if="loadingContent" size="sm" />
+              <SpinnerLoader v-if="loading" size="sm" />
               <ArrowUpIcon v-else :size="'size-4'" class="text-white_soft" />
             </template>
           </BaseButton>
@@ -93,13 +93,14 @@ import {
   GlobeAltIcon,
   AdjustmentsVerticalIcon
 } from '@/shared/components/icons'
-import { EDITOR_MODES, AI_MODELS_ENTITY, SEARCH_STATUSES } from '@/modules/editor/types'
+import { EDITOR_MODES, SEARCH_STATUSES } from '@/modules/editor/types'
+import { AI_MODELS_ENTITY } from '@/shared/config/ai'
 import { useChatStore } from '@/modules/ai/store/chat'
 import { storeToRefs } from 'pinia'
 
 const apiChatStore = useChatStore()
 const { getGenerateContent } = useChatStore()
-const { loadingContent } = storeToRefs(apiChatStore)
+const { loading } = storeToRefs(apiChatStore)
 
 const selectedAiModel: Ref<number | null> = ref(AI_MODELS_ENTITY[2].id)
 const selectedSearchMode: Ref<number | null> = ref(SEARCH_STATUSES[0].id)

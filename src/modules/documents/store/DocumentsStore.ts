@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, shallowRef } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
 import type { Ref } from 'vue'
 import type { AxiosError } from 'axios'
@@ -7,11 +7,27 @@ import { DocumentsService } from '../services/documents'
 import type { DocumentRequest, UpdateDocumentRequest, DocumentResponseData } from '../types'
 
 export const useDocumentsStore = defineStore('documents', () => {
-  const document: Ref<DocumentResponseData | null> = shallowRef(null)
-  const documents: Ref<DocumentResponseData[] | []> = ref([])
+  const documentRef: Ref<DocumentResponseData | null> = shallowRef(null)
+  const documents: Ref<DocumentResponseData[] | null> = shallowRef(null)
   const loading: Ref<boolean> = ref(false)
 
   const router = useRouter()
+
+  const document = computed({
+    get: () => documentRef.value,
+    set: (value: DocumentResponseData) => {
+      documentRef.value = {
+        ...documentRef.value,
+        id: value.id,
+        title: value.title,
+        content: value.content,
+        createdAt: value.createdAt,
+        updatedAt: value.updatedAt
+      }
+    }
+  })
+  const documentTitle = computed(() => documentRef.value?.title)
+  const documentId = computed(() => documentRef.value?.id)
 
   const createDocument = async (payload: DocumentRequest) => {
     try {
@@ -20,11 +36,11 @@ export const useDocumentsStore = defineStore('documents', () => {
 
       if (!response) return
 
-      document.value = response
+      document.value = response.data
 
       router.push({
         name: 'DocumentPage',
-        params: { id: response.id }
+        params: { id: response.data.id }
       })
 
       loading.value = false
@@ -34,12 +50,12 @@ export const useDocumentsStore = defineStore('documents', () => {
     }
   }
 
-  const getDocument = async (id: string) => {
+  const getDocument = async (id: number) => {
     try {
       loading.value = true
       const response = (await DocumentsService.getDocumentById(id)) as DocumentResponseData
 
-      console.log(`createDocument data: ${JSON.stringify(response)}`)
+      document.value = response.data
       loading.value = false
     } catch (error) {
       loading.value = false
@@ -54,7 +70,7 @@ export const useDocumentsStore = defineStore('documents', () => {
 
       if (!response) return
 
-      documents.value = response as DocumentResponseData[]
+      documents.value = response.data
       loading.value = false
     } catch (error) {
       loading.value = false
@@ -63,11 +79,11 @@ export const useDocumentsStore = defineStore('documents', () => {
   }
 
   const updateDocument = async (payload: UpdateDocumentRequest) => {
+    console.log(`content: ${JSON.stringify(payload)}`)
     try {
       loading.value = true
-      const response = (await DocumentsService.updateDocument(payload)) as DocumentResponseData
+      ;(await DocumentsService.updateDocument(payload)) as DocumentResponseData
 
-      console.log(`getDocument data: ${JSON.stringify(response)}`)
       loading.value = false
     } catch (error) {
       loading.value = false
@@ -90,6 +106,9 @@ export const useDocumentsStore = defineStore('documents', () => {
 
   return {
     document,
+    documentRef,
+    documentTitle,
+    documentId,
     documents,
     createDocument,
     getDocument,

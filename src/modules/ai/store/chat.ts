@@ -23,12 +23,11 @@ interface ResponseGeneratedData {
 export const useChatStore = defineStore('chat', () => {
   const news: Ref<ListItem[]> = ref([])
   const responseChat: Ref<ResponseGeneratedData | null> = ref(null)
-  const loadingNews: Ref<boolean> = ref(false)
-  const loadingContent: Ref<boolean> = ref(false)
+  const loading: Ref<boolean> = ref(false)
 
   const getGenerateContent = async (payload: GenerateChatDto) => {
     try {
-      loadingContent.value = true
+      loading.value = true
       const response = (await chatService.generateResponse(payload)) as Response
 
       if (!response) return
@@ -45,24 +44,24 @@ export const useChatStore = defineStore('chat', () => {
         })
         .catch(error => console.error(error))
 
-      loadingContent.value = false
+      loading.value = false
     } catch (error) {
-      loadingContent.value = false
+      loading.value = false
       return (error as AxiosError).response
     }
   }
 
   const getNewsTitles = async (payload: GenerateChatDto) => {
     try {
-      loadingNews.value = true
+      loading.value = true
       const response = (await chatService.generateResponse(payload)) as Response
 
       if (!response) return
 
       news.value = formatSpecificDataToObject(response.data)
-      loadingNews.value = false
+      loading.value = false
     } catch (error) {
-      loadingNews.value = false
+      loading.value = false
       return (error as AxiosError).response
     }
   }
@@ -119,8 +118,7 @@ export const useChatStore = defineStore('chat', () => {
     getNewsTitles,
     clearResponse,
     news,
-    loadingNews,
-    loadingContent,
+    loading,
     responseChat
   }
 })

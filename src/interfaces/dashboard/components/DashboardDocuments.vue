@@ -22,18 +22,25 @@
       <div class="grid grid-cols-4 gap-4 w-full">
         <div v-for="(document, index) in documents" :key="index" class="h-36 relative">
           <router-link
-            :to="`/document/${document.id}`"
+            :to="{
+              path: `/document/${document.id}`,
+              name: 'DocumentPage',
+              params: { id: document.id },
+              query: { doc: true }
+            }"
             class="flex flex-col items-start justify-between border bg-divider_light_2 border-black_mute rounded-lg h-full w-full p-3 hover:bg-gray_dark_4 transition ease-in-out delay-20"
           >
             <div class="flex flex-col items-start justify-between h-full w-full overflow-hidden">
-              <div class="text-lg line-clamp-1 truncate w-full">{{ document.title }}</div>
+              <div class="text-lg line-clamp-1 truncate w-full">
+                {{ document?.title }}
+              </div>
               <span
-                class="text-xs font-[300] text-text_dark_2 line-clamp-2 truncate text-wrap w-full"
+                class="text-xs font-[300] text-text_dark_2 line-clamp-3 h-12 truncate text-wrap w-full"
               >
-                {{ document.content }}
+                {{ convertHtmlToString(document?.content) }}
               </span>
               <div class="flex items-center justify-between text-gray_dark_1 text-xs w-full">
-                Created {{ TimestampConverter(document.createdAt) }}
+                Created {{ TimestampConverter(document?.createdAt) }}
                 <button
                   type="button"
                   class="flex items-center justify-center rounded-md"
@@ -48,6 +55,19 @@
             </div>
           </router-link>
         </div>
+        <div class="h-36 relative">
+          <div
+            class="flex flex-col items-center justify-center h-full w-full p-3 border border-black_soft rounded-lg hover:bg-gray_dark_4"
+          >
+            <button
+              class="flex flex-col items-center justify-center w-full h-full"
+              @click="openCreateDocModal"
+            >
+              <PlusCircleIcon :size="'size-6'" class="h-6 w-6 my-2 text-text_dark_2" />
+              <span class="text-xs text-text_light_1">New document</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div v-if="loading" class="flex flex-col items-center justify-center w-full py-12">
@@ -59,7 +79,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { DocumentPlusIcon, TrashIcon } from '@/shared/components/icons'
+import { DocumentPlusIcon, TrashIcon, PlusCircleIcon } from '@/shared/components/icons'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
 import BarsLoader from '@/shared/components/base/BarsLoader.vue'
 import { useCreateDocModal } from '@/modules/documents/composables/useCreateDocModal'
@@ -67,6 +87,7 @@ import { useDeleteDocModal } from '@/modules/documents/composables/useDeleteDocM
 import { useDocumentsStore } from '@/modules/documents/store/DocumentsStore'
 import { storeToRefs } from 'pinia'
 import { TimestampConverter } from '@/shared/lib/utils/timestampConverter'
+import { convertHtmlToString } from '@/shared/lib/utils/convertHtmlToString'
 
 const apiDocumentsStore = useDocumentsStore()
 const { getDocuments } = useDocumentsStore()

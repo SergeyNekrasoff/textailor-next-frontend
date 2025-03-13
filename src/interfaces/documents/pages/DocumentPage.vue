@@ -1,11 +1,8 @@
 <template>
   <div class="mx-auto w-full grid grid-cols-10">
     <div class="chat">
-      <div
-        class="chat__inner"
-        :class="loadingNews || loadingContent ? 'justify-end' : 'justify-between'"
-      >
-        <template v-if="loadingNews || loadingContent">
+      <div class="chat__inner" :class="loading ? 'justify-end' : 'justify-between'">
+        <template v-if="loading">
           <div
             class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center"
           >
@@ -23,7 +20,7 @@
             </div>
             <div
               v-if="news && !responseChat"
-              class="flex flex-row flex-wrap items-start justify-start w-[65%] gap-2"
+              class="flex flex-row flex-wrap items-start justify-between w-[65%] gap-1 mt-5"
             >
               <button
                 v-for="item in news"
@@ -33,7 +30,7 @@
                 @click="getGenerateContent({ prompt: item.text })"
               >
                 {{ item.text }}
-                <ArrowTopRightOnSquareIcon :size="'size-5'" class="w-5" />
+                <ArrowTopRightOnSquareIcon :size="'size-5'" class="w-3" />
               </button>
             </div>
           </div>
@@ -137,10 +134,11 @@
         class="w-full"
         :mode="EDITOR_MODES.ADVANCED"
         :placeholder="'Start typing, copy or paste to get started...'"
-        :deliveryContent="selectedContent"
+        :delivery-content="selectedContent"
+        :document-content="document?.content || ''"
         @word-count="setWordCount"
         @character-count="setCharacterCount"
-        @send="handleContent"
+        @editable-content="delayUpdateContent"
       />
     </div>
     <div
@@ -171,13 +169,22 @@ import PromptEditor from '@/interfaces/documents/components/PromptEditor.vue'
 
 import { EDITOR_MODES } from '@/modules/editor/types'
 import { useChatStore } from '@/modules/ai/store/chat'
+import { useDocumentsStore } from '@/modules/documents/store/DocumentsStore'
 import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
+import { debounce } from '@/shared/lib/utils/debounce'
 
 import { useCopy } from '@/shared/lib/use/useCopy'
+import type { UpdateDocumentRequest } from '@/modules/documents/types'
+
+const route = useRoute()
 
 const apiChatStore = useChatStore()
+const apiDocumentsStore = useDocumentsStore()
 const { getGenerateContent, getNewsTitles, clearResponse } = useChatStore()
-const { responseChat, news, loadingContent, loadingNews } = storeToRefs(apiChatStore)
+const { getDocument, updateDocument } = useDocumentsStore()
+const { responseChat, news, loading } = storeToRefs(apiChatStore)
+const { document } = storeToRefs(apiDocumentsStore)
 
 const { copyToClipboard, options } = useCopy({
   message: {
@@ -190,10 +197,20 @@ const wordCount: Ref<number> = ref(0)
 const characterCount: Ref<number> = ref(0)
 const selectedContent: Ref<string> = ref('')
 const copied: Ref<boolean> = ref(false)
+const selectedDocument: Ref<UpdateDocumentRequest | null> = ref(null)
 
-const handleContent = (value: unknown) => {
-  console.log(`content: ${value}`)
+const updateContent = (content: string) => {
+  if (!content) return
+
+  selectedDocument.value = {
+    ...selectedDocument.value,
+    id: document.value?.id,
+    title: document.value?.title,
+    content: content
+  }
 }
+
+const delayUpdateContent = debounce(updateContent, 200)
 
 const shareContent = (value: string) => {
   selectedContent.value = value
@@ -228,6 +245,26 @@ watch(copied, (value: boolean) => {
   }
 })
 
+watch(
+  selectedDocument,
+  async document => {
+    if (!document) return
+    await updateDocument(document)
+  },
+  { deep: true, immediate: true }
+)
+
+watch(
+  () => route,
+  async currentRoute => {
+    if (currentRoute.query.doc) {
+      console.log(`create new doc`)
+      await getDocument(currentRoute.params.id)
+    }
+  },
+  { immediate: true }
+)
+
 onMounted(async () => {
   await getNewsTitles({
     prompt:
@@ -251,7 +288,7 @@ onMounted(async () => {
 }
 
 .chat-toggle-pill {
-  @apply cursor-pointer bg-ff/50 border border-solid border-divider_light_2 rounded-md flex items-start justify-between p-2 text-xs text-left w-[25%] min-h-[66px];
+  @apply cursor-pointer bg-ff/50 border border-solid border-divider_light_2 rounded-md flex items-start justify-between p-2 text-xs text-left w-[25%] min-h-[50px];
   flex: 1 1 calc(25% - 8px);
   transition: transform 0.2s ease-in-out;
 

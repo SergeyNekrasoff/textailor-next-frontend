@@ -101,7 +101,6 @@
         class="absolute bottom-2 right-24 w-24 bg-tt flex items-center justify-center rounded-md px-4 py-1 text-white transition hover:bg-grandlight xss:px-2 z-50 cursor-pointer"
         :class="getStringHTMLContent && getStringHTMLContent.length > 0 ? '' : ''"
         :disabled="disableEditor"
-        @click="sendHTMLContent"
       >
         <span class="text-base font-[400] xss:hidden">Save</span>
       </button>
@@ -142,7 +141,8 @@ const props = withDefaults(defineProps<ConfigEditor>(), {
   placeholder: 'default',
   submit: false,
   disabled: false,
-  deliveryContent: ''
+  deliveryContent: '',
+  documentContent: ''
 })
 
 const emit = defineEmits(['click', 'send', 'word-count', 'character-count', 'editable-content'])
@@ -1369,12 +1369,6 @@ const setCurrentModal = (modal: string) => {
 
 const close = () => {
   isFocusedEditor.value = false
-}
-
-const sendHTMLContent = () => {
-  console.log(`call send html content`)
-  emit('send', editable.value?.innerHTML)
-  close()
   editable.value = null
 }
 
@@ -1383,6 +1377,7 @@ const getStringHTMLContent = computed(() => {
 })
 
 const getDeliveredContent = computed(() => props.deliveryContent)
+const getDocumentContent = computed(() => props.documentContent)
 
 const isAdvancedModeEditor = computed(() => props.mode === EDITOR_MODES.ADVANCED)
 const hasButton = computed(() => props.submit)
@@ -1396,7 +1391,11 @@ watch(focused, focused => {
 })
 watch(wordCount, value => emit('word-count', value))
 watch(characterCount, value => emit('character-count', value))
-watch(textContent, value => emit('editable-content', value))
+watch(textContent, value => {
+  if (!value) return
+
+  emit('editable-content', editable.value?.innerHTML)
+})
 watch(getDeliveredContent, value => {
   if (value.length > 0) {
     const textNode = document.createTextNode(value)
@@ -1414,6 +1413,15 @@ watch(getDeliveredContent, value => {
     return
   }
 })
+watch(getDocumentContent, value => {
+  if (value.length && editable.value) {
+    const htmlContent = convertStringToHTML(value)
+
+    editable.value?.focus()
+
+    editable.value.appendChild(htmlContent)
+  }
+})
 
 onClickOutside(wrapper, close)
 
@@ -1424,6 +1432,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   // cleanup()
+  close()
 })
 </script>
 

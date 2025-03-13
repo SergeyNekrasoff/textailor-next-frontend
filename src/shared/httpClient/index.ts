@@ -1,3 +1,4 @@
+import type { DocumentRequest } from '@/modules/documents/types'
 import axios, { type AxiosInstance, type AxiosError, type AxiosRequestConfig } from 'axios'
 
 export interface ApiClientConfig {
@@ -62,8 +63,12 @@ class HttpClient {
     return this.instance.post(url, data, config)
   }
 
-  public put<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
-    return this.instance.put(url, data, config)
+  public patch<T>(
+    url: string,
+    data?: { id: number; updateDocumentDto: DocumentRequest },
+    config?: AxiosRequestConfig
+  ): Promise<T> {
+    return this.instance.patch(url, data, config)
   }
 
   public delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
