@@ -114,6 +114,10 @@ const getValue = (event: Event) => {
     }
   }
 
+  &__prefix {
+    @apply pl-2;
+  }
+
   &__field {
     @apply w-full text-text_dark_1 font-light py-2 px-3 rounded-md border border-solid border-divider_dark_2 overflow-hidden;
 

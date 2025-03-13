@@ -31,8 +31,11 @@
             class="flex flex-col items-start justify-between border bg-divider_light_2 border-black_mute rounded-lg h-full w-full p-3 hover:bg-gray_dark_4 transition ease-in-out delay-20"
           >
             <div class="flex flex-col items-start justify-between h-full w-full overflow-hidden">
-              <div class="text-lg line-clamp-1 truncate w-full">
-                {{ document?.title }}
+              <div class="flex flex-row flex-nowrap items-center justify-start w-full">
+                <DocumentTextIcon :size="'size-5'" class="h-4 w-4 text-text_dark_4 mr-2" />
+                <p class="text-lg line-clamp-1 text-wrap truncate overflow-hidden w-11/12">
+                  {{ document?.title }}
+                </p>
               </div>
               <span
                 class="text-xs font-[300] text-text_dark_2 line-clamp-3 h-12 truncate text-wrap w-full"
@@ -79,7 +82,12 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { DocumentPlusIcon, TrashIcon, PlusCircleIcon } from '@/shared/components/icons'
+import {
+  DocumentPlusIcon,
+  TrashIcon,
+  PlusCircleIcon,
+  DocumentTextIcon
+} from '@/shared/components/icons'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
 import BarsLoader from '@/shared/components/base/BarsLoader.vue'
 import { useCreateDocModal } from '@/modules/documents/composables/useCreateDocModal'

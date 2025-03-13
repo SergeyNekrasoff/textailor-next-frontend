@@ -6,7 +6,7 @@
         <div
           class="flex flex-col items-start justify-end border bg-divider_light_2 border-black_mute rounded-lg h-full w-full p-4 hover:bg-gray_dark_4 hover:shadow-md hover:shadow-gray_dark_1 transition ease-in-out delay-20"
         >
-          <img :src="getImageUrl('chat-ai')" class="w-14 h-14 absolute top-[12px] right-[12px]" />
+          <img :src="getImageUrl('chat-ai')" class="w-10 h-10 absolute top-[12px] left-[12px]" />
           <div class="h-[50%] mb-2">
             <div class="text-2xl font-[600] mb-2">Use Editor with Chat</div>
             <div class="text-sm font-light text-gray_light_1">
@@ -14,8 +14,31 @@
               tasks like writing, brainstorming, researching, and more.
             </div>
           </div>
-          <button type="button" class="hover:text-text_dark_code" @click="openCreateDocModal">
+          <button
+            type="button"
+            class="text-sm flex items-center justify-start hover:text-text_dark_code"
+            @click="openCreateDocModal"
+          >
             Try this
+          </button>
+        </div>
+      </div>
+      <div class="w-[33%] h-64">
+        <div
+          class="flex flex-col items-start justify-end border bg-divider_light_2 border-black_mute rounded-lg h-full w-full p-4 hover:bg-gray_dark_4 hover:shadow-md hover:shadow-gray_dark_1 transition ease-in-out delay-20"
+        >
+          <img :src="getImageUrl('templates')" class="w-10 h-10 absolute top-[12px] left-[12px]" />
+          <div class="h-[50%] mb-2">
+            <div class="text-2xl font-[600] mb-2">Explore Templates</div>
+            <div class="text-sm font-light text-gray_light_1">
+              Explore our most popular and highly-rated templates.
+            </div>
+          </div>
+          <button
+            type="button"
+            class="text-sm flex items-center justify-start hover:text-text_dark_code"
+          >
+            Show all
           </button>
         </div>
       </div>
