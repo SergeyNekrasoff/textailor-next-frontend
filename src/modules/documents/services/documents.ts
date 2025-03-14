@@ -51,5 +51,16 @@ export const DocumentsService = {
     } catch (error) {
       return (error as AxiosError).response
     }
+  },
+
+  async search(title: string): Promise<DocumentResponseData | unknown> {
+    try {
+      const response = (await httpClient.get(
+        `/documents/search?title=${title}`
+      )) as DocumentResponseData
+      return response
+    } catch (error) {
+      return (error as AxiosError).response
+    }
   }
 }

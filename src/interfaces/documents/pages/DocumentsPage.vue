@@ -35,7 +35,8 @@
                 :is-disabled="isDisabled"
                 :border="false"
                 placeholder="Enter document name"
-                @update:model-value="handleChange"
+                @update:model-value="delayHandleChange"
+                @keypress.enter="delayHandleChange"
                 @blur="handleBlur"
               >
                 <template #prefix>
@@ -141,6 +142,7 @@ import { useDocumentsStore } from '@/modules/documents/store/DocumentsStore'
 import { storeToRefs } from 'pinia'
 import { TimestampConverter } from '@/shared/lib/utils/timestampConverter'
 import { convertHtmlToString } from '@/shared/lib/utils/convertHtmlToString'
+import { debounce } from '@/shared/lib/utils/debounce'
 
 const FILTER = [
   {
@@ -158,7 +160,7 @@ const FILTER = [
 ]
 
 const apiDocumentsStore = useDocumentsStore()
-const { getDocuments } = useDocumentsStore()
+const { getDocuments, findDocumentByTitle } = useDocumentsStore()
 const { documents, loading } = storeToRefs(apiDocumentsStore)
 
 const { openCreateDocModal } = useCreateDocModal()
@@ -168,8 +170,13 @@ const selectedFilter: Ref<number | null> = ref(null)
 const search: Ref<string> = ref('')
 const isDisabled: Ref<boolean> = ref(false)
 
-const handleChange = () => console.log(`handle change`)
+const handleChange = async (value: string) => {
+  await findDocumentByTitle(value)
+}
+
 const handleBlur = () => console.log(`handle blur`)
+
+const delayHandleChange = debounce(handleChange, 400)
 
 onMounted(async () => {
   await getDocuments()

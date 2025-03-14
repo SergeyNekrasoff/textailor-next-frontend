@@ -8,7 +8,7 @@ import type { DocumentRequest, UpdateDocumentRequest, DocumentResponseData } fro
 
 export const useDocumentsStore = defineStore('documents', () => {
   const documentRef: Ref<DocumentResponseData | null> = shallowRef(null)
-  const documents: Ref<DocumentResponseData[] | null> = shallowRef(null)
+  const documentsRef: Ref<DocumentResponseData[] | null> = shallowRef(null)
   const loading: Ref<boolean> = ref(false)
 
   const router = useRouter()
@@ -24,6 +24,14 @@ export const useDocumentsStore = defineStore('documents', () => {
         createdAt: value.createdAt,
         updatedAt: value.updatedAt
       }
+    }
+  })
+  const documents = computed({
+    get: () => documentsRef.value,
+    set: (documents: DocumentResponseData[]) => {
+      if (!documents) return
+
+      documentsRef.value = documents
     }
   })
   const documentTitle = computed(() => documentRef.value?.title)
@@ -63,6 +71,21 @@ export const useDocumentsStore = defineStore('documents', () => {
     }
   }
 
+  const findDocumentByTitle = async (title: string) => {
+    try {
+      loading.value = true
+      const response = (await DocumentsService.search(title)) as DocumentResponseData[]
+
+      if (!response.data) return
+
+      documents.value = response.data.length > 0 ? response.data : documentRef.value
+      loading.value = false
+    } catch (error) {
+      loading.value = false
+      return (error as AxiosError).response
+    }
+  }
+
   const getDocuments = async () => {
     try {
       loading.value = true
@@ -79,7 +102,6 @@ export const useDocumentsStore = defineStore('documents', () => {
   }
 
   const updateDocument = async (payload: UpdateDocumentRequest) => {
-    console.log(`content: ${JSON.stringify(payload)}`)
     try {
       loading.value = true
       ;(await DocumentsService.updateDocument(payload)) as DocumentResponseData
@@ -106,13 +128,13 @@ export const useDocumentsStore = defineStore('documents', () => {
 
   return {
     document,
-    documentRef,
     documentTitle,
     documentId,
     documents,
     createDocument,
     getDocument,
     getDocuments,
+    findDocumentByTitle,
     updateDocument,
     deleteDocument,
     loading

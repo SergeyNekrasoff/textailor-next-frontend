@@ -19,7 +19,7 @@
     <div
       v-if="visibleLink && getCurrentModal"
       ref="textLinkRef"
-      class="absolute w-[320px] xss:-left-2 s:left-0 m:-left-[330px] -top-[20px] flex flex-col items-start justify-start border bg-divider_light_2 border-black_mute rounded-lg p-4 z-[1000]"
+      class="absolute w-[320px] xss:-left-2 s:left-0 m:-left-[330px] -top-[20px] flex flex-col items-start justify-start border bg-black_pure border-black_mute rounded-lg p-4 z-[1000]"
     >
       <div class="flex items-start justify-between w-full relative">
         <div class="flex flex-col items-start justify-start">
@@ -46,7 +46,7 @@
         </div>
 
         <BaseButton
-          class="border border-divider_dark_1"
+          class="bg-black_mute border border-divider_dark_1"
           :disabled="!urlPath || !isValidTextLink"
           @click="addTextLink"
         >
