@@ -13,7 +13,7 @@
 }
 
 .app-editor {
-  @apply h-full w-[90%] relative rounded-md whitespace-pre-wrap resize-none text-white_soft hover:outline-none focus:outline-none focus-visible:outline-none active:outline-none p-3 xss:text-sm s:text-base m:text-base transition z-50;
+  @apply h-full w-[100%] relative rounded-md whitespace-pre-wrap resize-none text-white_soft hover:outline-none focus:outline-none focus-visible:outline-none active:outline-none p-3 xss:text-sm s:text-base m:text-base transition z-50;
 
   & > * {
     color: var(--vt-c-white-soft);

@@ -10,6 +10,7 @@ export const useDocumentsStore = defineStore('documents', () => {
   const documentRef: Ref<DocumentResponseData | null> = shallowRef(null)
   const documentsRef: Ref<DocumentResponseData[] | null> = shallowRef(null)
   const loading: Ref<boolean> = ref(false)
+  const notFound: Ref<boolean> = ref(false)
 
   const router = useRouter()
 
@@ -74,14 +75,17 @@ export const useDocumentsStore = defineStore('documents', () => {
   const findDocumentByTitle = async (title: string) => {
     try {
       loading.value = true
+      notFound.value = false
       const response = (await DocumentsService.search(title)) as DocumentResponseData[]
 
       if (!response.data) return
 
-      documents.value = response.data.length > 0 ? response.data : documentRef.value
+      documents.value = response.data.length > 0 ? response.data : []
+      notFound.value = response.data.length > 0 ? false : true
       loading.value = false
     } catch (error) {
       loading.value = false
+      notFound.value = false
       return (error as AxiosError).response
     }
   }
@@ -89,6 +93,7 @@ export const useDocumentsStore = defineStore('documents', () => {
   const getDocuments = async () => {
     try {
       loading.value = true
+      notFound.value = false
       const response = (await DocumentsService.getAllDocuments()) as DocumentResponseData[]
 
       if (!response) return
@@ -97,6 +102,7 @@ export const useDocumentsStore = defineStore('documents', () => {
       loading.value = false
     } catch (error) {
       loading.value = false
+      notFound.value = false
       return (error as AxiosError).response
     }
   }
@@ -137,6 +143,7 @@ export const useDocumentsStore = defineStore('documents', () => {
     findDocumentByTitle,
     updateDocument,
     deleteDocument,
-    loading
+    loading,
+    notFound
   }
 })

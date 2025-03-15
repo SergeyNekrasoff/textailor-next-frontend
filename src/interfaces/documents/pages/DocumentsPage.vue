@@ -4,15 +4,53 @@
   >
     <div class="flex w-full flex-1 flex-col max-w-screen-xl mx-auto">
       <div class="my-16">
+        <div class="flex items-center justify-between">
+          <div class="text-2xl mb-4">Documents</div>
+        </div>
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-64">
+            <BaseFormInput
+              v-model="search"
+              :name="'search'"
+              :input-type="'text'"
+              :border="false"
+              placeholder="Enter document name"
+              @update:model-value="delayHandleChange"
+              @keypress.enter="delayHandleChange"
+              @blur="handleBlur"
+            >
+              <template #prefix>
+                <MagnifyingGlassIcon class="h-4 w-4 text-text_dark_2" />
+              </template>
+              <template v-if="search" #postfix>
+                <XCircleIcon
+                  class="h-4 w-4 mr-2 text-text_dark_2 cursor-pointer"
+                  @click="search = ''"
+                />
+              </template>
+            </BaseFormInput>
+          </div>
+          <div>
+            <BaseSelect v-model="sortBy" :options="FILTER" :placeholder="'Sort by'">
+              <template v-slot:icon>
+                <FunnelIcon class="h-4 w-4 text-gray_dark_1" />
+              </template>
+            </BaseSelect>
+          </div>
+        </div>
+        <div v-if="notFound" class="flex flex-col items-center justify-center my-4 w-full">
+          <ArchiveBoxXMarkIcon :size="'size-10'" class="h-24 w-24 mb-4 text-text_dark_4" />
+          <p class="text-xl font-[400] mb-1">Not found</p>
+        </div>
         <div
-          v-if="documents?.length === 0"
+          v-if="sortedDocuments?.length === 0 && !notFound"
           class="flex flex-col items-center justify-center my-4 w-full"
         >
           <DocumentPlusIcon :size="'size-10'" class="h-24 w-24 mb-4 text-text_dark_4" />
           <p class="text-xl font-[400] mb-1">No documents found</p>
-          <span class="text-xs font-[400] text-gray_dark_1"
-            >Get started by creating new document</span
-          >
+          <span class="text-xs font-[400] text-gray_dark_1">
+            Get started by creating new document
+          </span>
 
           <BaseButton class="mt-6 bg-text_dark_4" @click="openCreateDocModal">
             <template v-slot:icon>
@@ -23,40 +61,8 @@
         </div>
 
         <div v-else>
-          <div class="flex items-center justify-between">
-            <div class="text-2xl mb-4">Documents</div>
-          </div>
-          <div class="flex items-center justify-between mb-6">
-            <div class="w-64">
-              <BaseFormInput
-                :model-value="search"
-                :name="'search'"
-                :input-type="'text'"
-                :is-disabled="isDisabled"
-                :border="false"
-                placeholder="Enter document name"
-                @update:model-value="delayHandleChange"
-                @keypress.enter="delayHandleChange"
-                @blur="handleBlur"
-              >
-                <template #prefix>
-                  <MagnifyingGlassIcon class="h-4 w-4 text-text_dark_2" />
-                </template>
-                <template v-if="search" #postfix>
-                  <XCircleIcon class="h-4 w-4 ml-2 text-text_dark_2" />
-                </template>
-              </BaseFormInput>
-            </div>
-            <div>
-              <BaseSelect v-model="selectedFilter" :options="FILTER" :placeholder="'Sort by'">
-                <template v-slot:icon>
-                  <FunnelIcon class="h-4 w-4 text-gray_dark_1" />
-                </template>
-              </BaseSelect>
-            </div>
-          </div>
           <div class="grid grid-cols-4 gap-4 w-full">
-            <div v-for="(document, index) in documents" :key="index" class="h-36 relative">
+            <div v-for="(document, index) in sortedDocuments" :key="index" class="h-36 relative">
               <router-link
                 :to="{
                   path: `/document/${document.id}`,
@@ -81,7 +87,10 @@
                     {{ convertHtmlToString(document?.content) }}
                   </span>
                   <div class="flex items-center justify-between text-gray_dark_1 text-xs w-full">
-                    Created {{ TimestampConverter(document?.createdAt) }}
+                    <span v-if="sortBy !== 2"
+                      >Created {{ TimestampConverter(document?.createdAt) }}</span
+                    >
+                    <span v-else>Updated {{ TimestampConverter(document?.updatedAt) }}</span>
                     <button
                       type="button"
                       class="flex items-center justify-center rounded-md"
@@ -96,7 +105,7 @@
                 </div>
               </router-link>
             </div>
-            <div class="h-36 relative">
+            <div v-if="!notFound" class="h-36 relative">
               <div
                 class="flex flex-col items-center justify-center h-full w-full p-3 border border-black_soft rounded-lg hover:bg-gray_dark_4"
               >
@@ -121,7 +130,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import {
   DocumentTextIcon,
@@ -130,7 +139,8 @@ import {
   DocumentPlusIcon,
   PlusCircleIcon,
   TrashIcon,
-  FunnelIcon
+  FunnelIcon,
+  ArchiveBoxXMarkIcon
 } from '@/shared/components/icons'
 import BaseFormInput from '@/shared/components/base/BaseFormInput.vue'
 import BarsLoader from '@/shared/components/base/BarsLoader.vue'
@@ -161,22 +171,53 @@ const FILTER = [
 
 const apiDocumentsStore = useDocumentsStore()
 const { getDocuments, findDocumentByTitle } = useDocumentsStore()
-const { documents, loading } = storeToRefs(apiDocumentsStore)
+const { documents, notFound, loading } = storeToRefs(apiDocumentsStore)
 
 const { openCreateDocModal } = useCreateDocModal()
 const { openDeleteDocModal } = useDeleteDocModal()
 
-const selectedFilter: Ref<number | null> = ref(null)
 const search: Ref<string> = ref('')
-const isDisabled: Ref<boolean> = ref(false)
+const sortBy: Ref<number> = ref(0)
 
 const handleChange = async (value: string) => {
   await findDocumentByTitle(value)
 }
 
-const handleBlur = () => console.log(`handle blur`)
+const handleBlur = (value: string) => {
+  search.value = value
+}
 
-const delayHandleChange = debounce(handleChange, 400)
+const delayHandleChange = debounce(handleChange, 200)
+
+watch(search, async (value: string) => {
+  if (value.length === 0) {
+    await getDocuments()
+  }
+})
+
+const sortedDocuments = computed(() => {
+  if (sortBy.value === 1) {
+    return documents.value!.sort((a, b) =>
+      a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+    )
+  } else if (sortBy.value === 2) {
+    return documents.value!.sort((a, b) => {
+      const date1 = new Date(a.updatedAt)
+      const date2 = new Date(b.updatedAt)
+
+      return date2.getTime() - date1.getTime()
+    })
+  } else if (sortBy.value === 3) {
+    return documents.value!.sort((a, b) => {
+      const date1 = new Date(a.createdAt)
+      const date2 = new Date(b.createdAt)
+
+      return date2.getTime() - date1.getTime()
+    })
+  }
+
+  return documents.value
+})
 
 onMounted(async () => {
   await getDocuments()

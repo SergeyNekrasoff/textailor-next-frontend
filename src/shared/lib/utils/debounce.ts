@@ -9,11 +9,3 @@ export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
     timeout = setTimeout(() => func(...args), waitFor)
   }
 }
-
-// debounce(async function () {
-//   const { value } = event.target as HTMLTextAreaElement
-
-//   if (value) {
-//     await bookModel.fetchBooks(value)
-//   }
-// }, 100)
