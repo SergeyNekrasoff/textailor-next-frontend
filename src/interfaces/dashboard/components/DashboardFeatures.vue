@@ -4,7 +4,7 @@
     <div class="flex items-start justify-start w-full gap-4">
       <div class="w-[33%] h-64">
         <div
-          class="flex flex-col items-start justify-end border bg-divider_light_2 border-black_mute rounded-lg h-full w-full p-4 hover:bg-gray_dark_4 hover:shadow-md hover:shadow-gray_dark_1 transition ease-in-out delay-20"
+          class="flex flex-col items-start justify-end border bg-divider_light_2 border-black_mute rounded-lg h-full w-full p-4"
         >
           <img :src="getImageUrl('chat-ai')" class="w-10 h-10 absolute top-[12px] left-[12px]" />
           <div class="h-[50%] mb-2">
@@ -16,7 +16,7 @@
           </div>
           <button
             type="button"
-            class="text-sm flex items-center justify-start hover:text-text_dark_code"
+            class="p-2 text-sm flex items-center justify-start hover:text-text_dark_code hover:translate-x-[1.5px] hover:transform-gpu transition ease-in-out delay-20"
             @click="openCreateDocModal"
           >
             Try this
@@ -25,7 +25,7 @@
       </div>
       <div class="w-[33%] h-64">
         <div
-          class="flex flex-col items-start justify-end border bg-divider_light_2 border-black_mute rounded-lg h-full w-full p-4 hover:bg-gray_dark_4 hover:shadow-md hover:shadow-gray_dark_1 transition ease-in-out delay-20"
+          class="flex flex-col items-start justify-end border bg-divider_light_2 border-black_mute rounded-lg h-full w-full p-4"
         >
           <img :src="getImageUrl('templates')" class="w-10 h-10 absolute top-[12px] left-[12px]" />
           <div class="h-[50%] mb-2">
@@ -36,7 +36,7 @@
           </div>
           <button
             type="button"
-            class="text-sm flex items-center justify-start hover:text-text_dark_code"
+            class="p-2 text-sm flex items-center justify-start hover:text-text_dark_code hover:translate-x-[1.5px] hover:transform-gpu transition ease-in-out delay-20"
           >
             Show all
           </button>

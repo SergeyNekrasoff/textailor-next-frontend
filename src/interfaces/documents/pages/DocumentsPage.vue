@@ -31,7 +31,12 @@
             </BaseFormInput>
           </div>
           <div>
-            <BaseSelect v-model="sortBy" :options="FILTER" :placeholder="'Sort by'">
+            <BaseSelect
+              v-model="sortBy"
+              :options="FILTER"
+              :placeholder="'Sort by'"
+              :position="'bottom'"
+            >
               <template v-slot:icon>
                 <FunnelIcon class="h-4 w-4 text-gray_dark_1" />
               </template>

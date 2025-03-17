@@ -8,7 +8,11 @@
       <CaretDownIcon v-else :size="'size-2.5'" />
     </button>
 
-    <div v-if="isOpen" class="options-container">
+    <div
+      v-if="isOpen"
+      class="options-container"
+      :class="position === 'top' ? 'options-container--top' : 'options-container--bottom'"
+    >
       <template v-if="props.searchable">
         <input
           v-model="searchTerm"
@@ -60,13 +64,15 @@ interface UseSelectProps {
   options?: Array<{ id: number; label: string; data?: unknown }>
   placeholder?: string
   searchable?: boolean
+  position?: string
 }
 
 const props = withDefaults(defineProps<UseSelectProps>(), {
   modelValue: null,
   options: () => [],
   placeholder: 'Select an option',
-  searchable: false
+  searchable: false,
+  position: 'top'
 })
 
 const optionsRef: Ref<HTMLDivElement | null> = ref(null)
@@ -99,7 +105,15 @@ onClickOutside(optionsRef, () => (isOpen.value = false))
 }
 
 .options-container {
-  @apply absolute bottom-0 left-auto right-0 border border-solid border-divider_dark_2 rounded-lg bg-black_soft z-[1000] transform-gpu translate-y-[-32px] w-[250px] overflow-hidden;
+  @apply absolute left-auto right-0 border border-solid border-divider_dark_2 rounded-lg bg-black_soft z-[1000] w-[250px] overflow-hidden;
+
+  &--top {
+    @apply bottom-0 top-auto transform-gpu translate-y-[-32px];
+  }
+
+  &--bottom {
+    @apply top-0 bottom-auto transform-gpu translate-y-[38px];
+  }
 }
 
 .options-list {
