@@ -40,8 +40,8 @@ export class AppRoutes {
     return getRoute(AppPages.profile, {})
   }
 
-  static getSettings() {
-    return getRoute(AppPages.settings, {})
+  static getBilling() {
+    return getRoute(AppPages.billing, {})
   }
 
   static getUIKit() {

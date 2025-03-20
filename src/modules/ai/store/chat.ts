@@ -2,7 +2,7 @@ import type { AxiosError } from 'axios'
 import { defineStore } from 'pinia'
 import type { GenerateChatDto } from '../types'
 import { chatService } from '../services/chat'
-import { ref, type Ref } from 'vue'
+import { computed, ref, type Ref } from 'vue'
 
 interface ListItem {
   id: number
@@ -106,6 +106,10 @@ export const useChatStore = defineStore('chat', () => {
     })
   }
 
+  const generatedWordsCount = computed(() => {
+    return 24095
+  })
+
   const clearResponse = async (): Promise<null> => {
     return new Promise(resolve => {
       responseChat.value = null
@@ -119,6 +123,7 @@ export const useChatStore = defineStore('chat', () => {
     clearResponse,
     news,
     loading,
-    responseChat
+    responseChat,
+    generatedWordsCount
   }
 })

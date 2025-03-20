@@ -2,16 +2,23 @@
   <div class="relative flex items-center justify-start" ref="optionsRef">
     <slot name="icon"></slot>
 
-    <button class="button-select" :class="{ 'is-open': isOpen }" @click="isOpen = !isOpen">
+    <button
+      class="button-select"
+      :class="[{ 'is-open': isOpen }, { 'button-select--xl': size === 'xl' }]"
+      @click="isOpen = !isOpen"
+    >
       <span class="pr-1.5">{{ selectedOption?.label || props.placeholder }}</span>
-      <CaretUpIcon v-if="isOpen" :size="'size-2.5'" />
-      <CaretDownIcon v-else :size="'size-2.5'" />
+      <CaretUpIcon v-if="isOpen" :class="size === 'xl' ? 'size-3' : 'size-2.5'" />
+      <CaretDownIcon v-else :class="size === 'xl' ? 'size-3' : 'size-2.5'" />
     </button>
 
     <div
       v-if="isOpen"
       class="options-container"
-      :class="position === 'top' ? 'options-container--top' : 'options-container--bottom'"
+      :class="[
+        { 'options-container--bottom': position === 'bottom' },
+        { 'options-container--xl': size === 'xl' }
+      ]"
     >
       <template v-if="props.searchable">
         <input
@@ -65,6 +72,7 @@ interface UseSelectProps {
   placeholder?: string
   searchable?: boolean
   position?: string
+  size?: string
 }
 
 const props = withDefaults(defineProps<UseSelectProps>(), {
@@ -72,7 +80,8 @@ const props = withDefaults(defineProps<UseSelectProps>(), {
   options: () => [],
   placeholder: 'Select an option',
   searchable: false,
-  position: 'top'
+  position: 'top',
+  size: ''
 })
 
 const optionsRef: Ref<HTMLDivElement | null> = ref(null)
@@ -102,17 +111,21 @@ onClickOutside(optionsRef, () => (isOpen.value = false))
 <style lang="scss" setup>
 .button-select {
   @apply text-xs flex items-center justify-start rounded-md p-2 bg-transparent text-gray_light_1;
+
+  &--xl {
+    @apply w-full text-sm justify-between border border-solid border-text_dark_4 p-3;
+  }
 }
 
 .options-container {
-  @apply absolute left-auto right-0 border border-solid border-divider_dark_2 rounded-lg bg-black_soft z-[1000] w-[250px] overflow-hidden;
-
-  &--top {
-    @apply bottom-0 top-auto transform-gpu translate-y-[-32px];
-  }
+  @apply absolute left-auto right-0 border border-solid border-divider_dark_2 rounded-lg bg-black_soft z-[1000] w-[250px] overflow-hidden bottom-0 top-auto transform-gpu translate-y-[-32px];
 
   &--bottom {
     @apply top-0 bottom-auto transform-gpu translate-y-[38px];
+  }
+
+  &--xl {
+    @apply w-full;
   }
 }
 

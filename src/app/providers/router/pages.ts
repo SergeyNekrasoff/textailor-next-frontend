@@ -6,7 +6,7 @@ import { routeName as document } from './routes/document'
 import { routeName as templates } from './routes/templates'
 import { routeName as history } from './routes/history'
 import { routeName as profile } from './routes/profile'
-import { routeName as settings } from './routes/settings'
+import { routeName as billing } from './routes/billing'
 import { routeName as UIKit } from './routes/ui-kit'
 import { routeName as notFound } from './routes/not-found'
 
@@ -19,7 +19,7 @@ export const pages = {
   templates,
   history,
   profile,
-  settings,
+  billing,
   UIKit,
   notFound
 } as const

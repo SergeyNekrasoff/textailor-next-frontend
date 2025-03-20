@@ -19,7 +19,7 @@
         </li>
         <li class="text-xs py-2 text-text_dark_3">Workspace</li>
         <li
-          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
+          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md mb-2"
         >
           <DocumentTextIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
           <router-link to="/documents" class="text-lg font-[500] w-[150px] pl-1">
@@ -27,19 +27,17 @@
           </router-link>
         </li>
         <!-- <li
-          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
+          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md mb-2"
         >
           <RectangleStackIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
-          <router-link to="/templates" class="text-lg font-medium w-full">Templates</router-link>
-        </li> -->
-        <!-- <li class="mb-4 mt-4">
-          <hr class="text-divider_dark_2" />
+          <router-link to="/templates" class="text-lg font-[500] w-[150px] pl-1">Templates</router-link
+          >
         </li>
         <li
-          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
+          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md mb-2"
         >
           <DocumentMagnifyingGlassIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
-          <router-link to="/history" class="text-lg font-[500] w-full">History</router-link>
+          <router-link to="/history" class="text-lg font-[500] w-[150px] pl-1">History</router-link>
         </li> -->
       </ul>
     </div>
@@ -50,13 +48,22 @@
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
         >
           <Cog8ToothIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
-          <router-link to="/settings" class="w-full">Settings</router-link>
+          <router-link to="/settings/profile" class="w-full">Settings</router-link>
         </li>
         <li
-          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md mb-10"
+          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
         >
           <PlusIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
           <button type="button" @click="() => console.log(`open modal`)">Invite members</button>
+        </li>
+        <li
+          class="text-sm flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md mb-10"
+        >
+          <SparklesIcon :size="'size-6'" class="h-5 w-5 mr-2 text-text_dark_2" />
+          <span>
+            <b>{{ generatedWordsCount }}</b>
+            words used
+          </span>
         </li>
         <li
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
@@ -64,13 +71,8 @@
           <span class="flex items-center justify-center h-8 w-12 rounded-full bg-purple mr-3">
             J
           </span>
-          <router-link to="/account" class="w-full">Judixel89</router-link>
+          <router-link to="/settings/profile" class="w-full">Judixel89</router-link>
           <ChevronRightIcon :size="'size-6'" class="h-5 w-5" />
-        </li>
-        <li
-          class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
-        >
-          <BaseToast />
         </li>
       </ul>
     </div>
@@ -136,17 +138,21 @@
 </template>
 
 <script setup lang="ts">
-const BaseToast = defineAsyncComponent(() => import('@/shared/components/base/BaseToast.vue'))
-
-import { defineAsyncComponent, ref } from 'vue'
+import { ref } from 'vue'
 import type { Ref } from 'vue'
 import {
   HomeIcon,
   DocumentTextIcon,
   Cog8ToothIcon,
   PlusIcon,
-  ChevronRightIcon
+  ChevronRightIcon,
+  SparklesIcon
 } from '@/shared/components/icons'
+import { useChatStore } from '@/modules/ai/store/chat'
+import { storeToRefs } from 'pinia'
+
+const apiChatStore = useChatStore()
+const { generatedWordsCount } = storeToRefs(apiChatStore)
 
 const collapsed: Ref<boolean> = ref(false)
 

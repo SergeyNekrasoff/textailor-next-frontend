@@ -4,7 +4,7 @@ export const routeName = 'ProfilePage'
 
 export const route: RouteRecordRaw = {
   name: routeName,
-  path: '/profile',
+  path: '/settings/profile',
   component: () => import('@/interfaces/profile/pages/ProfilePage.vue'),
   meta: {
     head: 'PROFILE'

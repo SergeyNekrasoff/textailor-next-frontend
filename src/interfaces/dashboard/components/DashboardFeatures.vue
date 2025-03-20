@@ -16,7 +16,7 @@
           </div>
           <button
             type="button"
-            class="p-2 text-sm flex items-center justify-start hover:text-text_dark_code hover:translate-x-[1.5px] hover:transform-gpu transition ease-in-out delay-20"
+            class="text-sm flex items-center justify-start hover:text-text_dark_code hover:translate-x-[1.5px] hover:transform-gpu transition ease-in-out delay-20"
             @click="openCreateDocModal"
           >
             Try this
@@ -36,9 +36,11 @@
           </div>
           <button
             type="button"
-            class="p-2 text-sm flex items-center justify-start hover:text-text_dark_code hover:translate-x-[1.5px] hover:transform-gpu transition ease-in-out delay-20"
+            class="text-sm flex items-center justify-start text-text_dark_4"
+            disabled
           >
-            Show all
+            <ExclamationTriangleIcon class="h-5 w-5 mr-2" />
+            Coming soon.
           </button>
         </div>
       </div>
@@ -48,7 +50,7 @@
 
 <script setup lang="ts">
 import { useCreateDocModal } from '@/modules/documents/composables/useCreateDocModal'
-
+import { ExclamationTriangleIcon } from '@/shared/components/icons'
 const { openCreateDocModal } = useCreateDocModal()
 
 const getImageUrl = (iconName: unknown) => {

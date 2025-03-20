@@ -106,7 +106,7 @@ const getValue = (event: Event) => {
   }
 
   &__label {
-    @apply relative text-xs max-w-max pb-1;
+    @apply relative text-xs max-w-max pb-2;
 
     &.required::after {
       content: '*';
