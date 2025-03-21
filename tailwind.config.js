@@ -22,6 +22,7 @@ export default {
       black_pure: 'var(--vt-c-black-pure)',
       black_soft: 'var(--vt-c-black-soft)',
       black_mute: 'var(--vt-c-black-mute)',
+      black_flash: 'var(--vt-c-black-flash)',
 
       indigo: 'var(--vt-c-indigo)',
       indigo_soft: 'var(--vt-c-indigo-soft)',

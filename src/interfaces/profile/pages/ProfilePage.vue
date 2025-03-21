@@ -42,7 +42,6 @@
         <hr class="w-full border-t border-text_dark_4 mb-4" />
         <div class="flex items-center justify-between w-full mt-4 mb-8">
           <span class="text-lg">Default AI Model</span>
-          <BaseButton class="" solid> Update Email </BaseButton>
         </div>
         <div class="flex flex-col w-full mb-4">
           <BaseSelect
@@ -60,7 +59,7 @@
           <span>
             Email
             <a
-              href="email:help@textailor.io"
+              href="mail:help@textailor.io"
               alt="Help Email"
               class="font-[700] text-text_light_code"
             >
@@ -77,7 +76,17 @@
           <div class="w-[62%] text-sm text-gray_dark_1">
             Deleting your account is permanent and cannot be undone.
           </div>
-          <BaseButton class="text-tt bg-transparent border border-solid border-tt" social>
+          <BaseButton
+            class="text-tt bg-transparent border border-solid border-tt"
+            social
+            @click="
+              openDeleteAccountModal({
+                username: '',
+                email: '',
+                password: ''
+              })
+            "
+          >
             Delete Account
           </BaseButton>
         </div>
@@ -93,6 +102,7 @@ import BaseButton from '@/shared/components/base/BaseButton.vue'
 import BaseFormInput from '@/shared/components/base/BaseFormInput.vue'
 import BaseSelect from '@/shared/components/base/BaseSelect.vue'
 import { AI_MODELS_ENTITY } from '@/shared/config/ai'
+import { useDeleteAccountModal } from '../composables/useDeleteAccountModal'
 
 const firstName: Ref<string> = ref('Sergey')
 const lastName: Ref<string> = ref('')
@@ -103,4 +113,5 @@ const selectedAiModel: Ref<number | null> = ref(AI_MODELS_ENTITY[2].id)
 const handleModelSelect = (value: string | number) => {
   console.log(`value: ${value}`)
 }
+const { openDeleteAccountModal } = useDeleteAccountModal()
 </script>

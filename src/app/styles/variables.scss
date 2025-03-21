@@ -15,6 +15,7 @@
   --vt-c-black-pure: #000000;
   --vt-c-black-soft: #242424;
   --vt-c-black-mute: #2f2f2f;
+  --vt-c-black-flash: #0d0d0d;
 
   --vt-c-indigo: #213547;
   --vt-c-indigo-soft: #476582;
@@ -142,9 +143,9 @@
    * -------------------------------------------------------------------------- */
 
 :root {
-  --vt-font-family-base: 'Nunito Sans', 'Inter var experimental', 'Inter var', Inter,
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
+  --vt-font-family-base: 'Nunito Sans', 'Inter var experimental', 'Inter var', Inter, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
   --vt-font-family-mono: Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 

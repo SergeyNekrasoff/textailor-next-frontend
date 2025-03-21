@@ -8,8 +8,8 @@
       @click="isOpen = !isOpen"
     >
       <span class="pr-1.5">{{ selectedOption?.label || props.placeholder }}</span>
-      <CaretUpIcon v-if="isOpen" :class="size === 'xl' ? 'size-3' : 'size-2.5'" />
-      <CaretDownIcon v-else :class="size === 'xl' ? 'size-3' : 'size-2.5'" />
+      <CaretUpIcon v-if="isOpen" :class="size === 'xl' ? 'size-3' : 'w-3 h-3'" />
+      <CaretDownIcon v-else :class="size === 'xl' ? 'size-3' : 'w-3 h-3'" />
     </button>
 
     <div

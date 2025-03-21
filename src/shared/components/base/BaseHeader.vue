@@ -12,13 +12,14 @@
         </div>
       </div>
       <div class="flex items-center justify-end">
-        <button
+        <router-link
+          to="/settings/billing"
           type="button"
           class="py-1 px-2 mr-3 rounded-md flex items-center justify-center border border-gray_dark_2 bg-green_lighter text-black_mute hover:bg-green_light"
         >
           <RocketLaunchIcon :size="'size-4'" class="h-3 w-3 mr-2 pointer" />
           <span class="text-xs">Upgrade</span>
-        </button>
+        </router-link>
         <button type="button">
           <BellIcon :size="'size-6'" class="h-5 w-5 mr-2 pointer" @click="toggleNotification" />
         </button>
