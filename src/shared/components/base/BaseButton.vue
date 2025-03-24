@@ -36,6 +36,10 @@ const emit = defineEmits(['click'])
 
 const attrs = useAttrs()
 
+defineOptions({
+  inheritAttrs: false
+})
+
 const props = withDefaults(defineProps<Button>(), {
   disabled: false
 })
@@ -87,6 +91,18 @@ const click = () => {
 
   &__centered {
     @apply py-3 flex justify-center items-center;
+  }
+}
+
+.button-profile {
+  @apply w-full p-0;
+
+  &:hover {
+    @apply bg-transparent;
+  }
+
+  .button__text {
+    @apply w-[70%];
   }
 }
 </style>

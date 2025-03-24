@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <BaseButton class="mb-10 w-full" :solid="true" :social="true" @click="onRegisterWithGoogle">
       <template #icon>
         <img :src="getImageUrl('google')" class="w-5 h-5 mr-2" alt="" />
@@ -9,16 +9,18 @@
 
     <div class="flex flex-col items-center justify-center mb-4">
       <div class="custom-line"></div>
-      <p class="text-xs font-[400] text-gray_dark_1 px-4 bg-black">Or sign up with your email</p>
+      <p class="text-xs font-[400] text-gray_dark_1 px-4 bg-black_flash">
+        Or sign up with your email
+      </p>
     </div>
 
     <form class="my-4">
-      <BaseFormInput
-        v-model="userForm.email"
-        class="mb-4"
-        name="email"
-        placeholder="Enter your email"
-      />
+      <div class="mb-4">
+        <BaseFormInput v-model="userForm.email" name="email" placeholder="Enter your email" />
+        <span v-if="error && !isChanged" class="mt-1 text-xs text-red_dark">
+          {{ error }}
+        </span>
+      </div>
 
       <BaseFormInput
         v-model="userForm.username"
@@ -36,12 +38,12 @@
       />
 
       <BaseButton
-        class="mb-4 w-full bg-blue_darker"
+        class="mb-4 w-full bg-text_light_code"
         :solid="false"
         :center="true"
-        @click="onRegister"
+        @click="register(userForm)"
       >
-        Sign up with Email
+        Register with Email
       </BaseButton>
     </form>
 
@@ -59,34 +61,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import type { Ref } from 'vue'
 import BaseFormInput from '@/shared/components/base/BaseFormInput.vue'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
-// import { AuthService } from '../services/AuthService'
-// import { useRouter } from 'vue-router'
+import { useAuthStore } from '../store/AuthStore'
+import { storeToRefs } from 'pinia'
+import type { UserRegister } from '../types'
 
-// const router = useRouter()
+const apiAuthStore = useAuthStore()
+const { register } = useAuthStore()
+const { error } = storeToRefs(apiAuthStore)
 
-const userForm = ref({ username: '', password: '', email: '' })
-// const authService = new AuthService()
-
-// const onRegister = async () => {
-//   try {
-//     const response = await authService.register(
-//       userForm.value.username,
-//       userForm.value.password,
-//       userForm.value.email
-//     )
-
-//     console.log(`response: ${response}`)
-
-//     // router.push({ path: '/' })
-//   } catch (error) {
-//     console.error('Register failed:', error)
-//   }
-// }
+const userForm: Ref<UserRegister> = ref({ username: '', password: '', email: '' })
+const isChanged: Ref<boolean> = ref(false)
 
 const onRegisterWithGoogle = () => console.log(`Register with Google`)
+
+const email: Ref<string> = computed(() => userForm.value.email)
+
+watch(email, (oldValue, newValue) => {
+  if (newValue) {
+    isChanged.value = true
+  }
+})
 
 const getImageUrl = (iconName: unknown) => {
   return new URL(`../../../assets/icons/${iconName}.svg`, import.meta.url).href

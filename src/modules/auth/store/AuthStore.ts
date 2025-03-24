@@ -1,45 +1,81 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import type { Ref } from 'vue'
-import AuthService from '../services/AuthService'
+import type { AxiosError } from 'axios'
+import { AuthService } from '../services/AuthService'
+import type { UserLogin, UserRegister, User } from './../types'
+import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
+  const user: Ref<User | null> = ref(null)
   const token: Ref<string | null> = ref(null)
-  const isAuthenticated: Ref<boolean> = ref(false)
+  const error: Ref<string> = ref('')
+  const loading: Ref<boolean> = ref(false)
 
-  const login = async (email: string, password: string) => {
+  const router = useRouter()
+
+  const login = async (payload: UserLogin) => {
     try {
-      const { data } = await AuthService.login(email, password)
+      loading.value = true
+      const response = await AuthService.login(payload)
 
-      if (data) {
-        token.value = data.access_token
-        isAuthenticated.value = true
+      if (!response?.data.access_token) return
+
+      token.value = response?.data.access_token
+      user.value = {
+        id: response?.data.id,
+        username: response?.data.username,
+        email: response?.data.email,
+        password: response?.data.password
       }
+      localStorage.setItem('token', response?.data.access_token)
+      router.push('/')
+
+      loading.value = false
     } catch (error) {
-      console.error('Login failed:', error)
-      throw error
+      loading.value = false
+      return (error as AxiosError).response
     }
   }
 
-  const logout = async () => {
-    await AuthService.logout()
-    isAuthenticated.value = false
-    token.value = null
+  const register = async (payload: UserRegister) => {
+    try {
+      loading.value = true
+      const response = await AuthService.register(payload)
+
+      if (response?.status === 400) {
+        error.value = response?.data.message
+        return
+      }
+
+      router.push('/')
+      loading.value = false
+    } catch (error) {
+      loading.value = false
+      return (error as AxiosError).response
+    }
   }
 
-  const getToken = (): string | null => {
-    // const token = localStorage.getItem('token')
-    // return !!token
-    return token.value
-  }
+  const logout = async (): Promise<void | unknown> => {
+    try {
+      const response = await AuthService.logout()
 
-  const isAuth = computed(() => !!isAuthenticated.value)
+      if (response?.status === 201) {
+        token.value = null
+        localStorage.removeItem('token')
+        router.push('/login')
+      }
+    } catch (error) {
+      return (error as AxiosError).response
+    }
+  }
 
   return {
+    register,
     login,
     logout,
-    getToken,
-    isAuth,
-    token
+    token,
+    user,
+    error
   }
 })

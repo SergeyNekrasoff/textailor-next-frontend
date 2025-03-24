@@ -10,11 +10,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { ref, computed, watch } from 'vue'
-// import { onClickOutside } from '@vueuse/core'
+import { onClickOutside } from '@vueuse/core'
 
-const router = useRouter()
+const route = useRoute()
 
 const emit = defineEmits(['open', 'close'])
 
@@ -38,7 +38,7 @@ const props = defineProps({
 const target = ref(null)
 const isOpen = ref(false)
 
-// onClickOutside(target, () => close())
+onClickOutside(target, () => close())
 
 const close = () => {
   isOpen.value = false
@@ -57,14 +57,15 @@ const dropdownClasses = computed(() => [
 ])
 
 watch(
-  () => router,
-  () => close()
+  () => route.path,
+  () => close(),
+  { immediate: true }
 )
 </script>
 
 <style lang="scss" scoped>
 .dropdown {
-  @apply relative w-fit;
+  @apply relative w-full;
 
   &__toggle {
     @apply flex cursor-pointer;
@@ -77,20 +78,26 @@ watch(
       @apply block;
     }
 
-    .dropdown_align_right & {
-      @apply right-auto left-0;
+    .dropdown_align_left & {
+      @apply -translate-x-52 transform-gpu;
     }
 
     .dropdown_align_right & {
-      @apply right-0 left-auto;
+      @apply translate-x-52 transform-gpu;
     }
 
     .dropdown_direction_down & {
-      @apply top-full bottom-auto;
+      @apply top-0;
     }
 
     .dropdown_direction_up & {
-      @apply top-auto bottom-full;
+      @apply bottom-0;
+    }
+  }
+
+  &-profile {
+    .dropdown__content {
+      @apply p-0;
     }
   }
 }

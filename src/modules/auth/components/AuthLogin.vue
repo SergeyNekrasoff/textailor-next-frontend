@@ -9,7 +9,9 @@
 
     <div class="flex flex-col items-center justify-center mb-4">
       <div class="custom-line"></div>
-      <p class="text-xs font-[400] text-gray_dark_1 px-4 bg-black">Or sign in with your email</p>
+      <p class="text-xs font-[400] text-gray_dark_1 px-4 bg-black_flash">
+        Or sign in with your email
+      </p>
     </div>
 
     <form class="my-4">
@@ -24,10 +26,10 @@
       />
 
       <BaseButton
-        class="mb-4 w-full bg-blue_darker"
+        class="mb-4 w-full bg-text_light_code"
         :solid="false"
         :center="true"
-        @click="handleLogin"
+        @click="login({ email, password })"
       >
         Continue with Email
       </BaseButton>
@@ -45,26 +47,15 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { Ref } from 'vue'
 import BaseFormInput from '@/shared/components/base/BaseFormInput.vue'
 import BaseButton from '@/shared/components/base/BaseButton.vue'
 import { useAuthStore } from '../store/AuthStore'
-import { useRouter } from 'vue-router'
 
-const authStore = useAuthStore()
-const router = useRouter()
+const { login } = useAuthStore()
 
-const email = ref('')
-const password = ref('')
-
-const handleLogin = async () => {
-  try {
-    await authStore.login(email.value, password.value)
-
-    router.push({ path: '/' })
-  } catch (error) {
-    console.error('Login error:', error)
-  }
-}
+const email: Ref<string> = ref('')
+const password: Ref<string> = ref('')
 
 const handleLoginWithGoogle = () => console.log(`Login with Google`)
 

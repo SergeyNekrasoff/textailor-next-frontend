@@ -1,44 +1,41 @@
-import HttpCLient from '@/shared/httpClient'
+import { HttpClient } from '@/shared/httpClient/index'
+import type { AxiosError } from 'axios'
+import type { UserLogin, UserRegister } from '../types'
 
-const pathToLogin = '/auth/login'
-const pathToUsers = '/users'
+const httpClient = new HttpClient()
 
-const authService = new HttpCLient()
-
-class AuthService {
-  public async login(email: string, password: string) {
+export const AuthService = {
+  async login(user: UserLogin) {
     try {
-      const response = await authService.post(pathToLogin, { email, password })
+      const response = await httpClient.post('/auth/login', {
+        email: user.email,
+        password: user.password
+      })
       return response
     } catch (error) {
-      console.error('Error login request:', error)
-      throw error
+      return (error as AxiosError).response
     }
-  }
+  },
 
-  public async register(username: string, password: string, email: string) {
+  async register(user: UserRegister) {
     try {
-      const response = await authService.post(pathToUsers, { email, password })
+      const response = await httpClient.post('/auth/register', {
+        username: user.username,
+        email: user.email,
+        password: user.password
+      })
       return response
     } catch (error) {
-      console.error('Error register request:', error)
-      throw error
+      return (error as AxiosError).response
     }
-  }
+  },
 
-  public async hello() {
+  async logout(): Promise<void | unknown> {
     try {
-      const response = await authService.post('/hello', 'test')
+      const response = await httpClient.post('/auth/logout')
       return response
     } catch (error) {
-      console.error('Error hello request:', error)
-      throw error
+      return (error as AxiosError).response
     }
-  }
-
-  async logout() {
-    localStorage.removeItem('token')
   }
 }
-
-export default new AuthService()

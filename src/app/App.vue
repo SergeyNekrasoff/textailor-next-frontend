@@ -35,6 +35,4 @@ import BaseContainerModal from '@/shared/components/base/BaseContainerModal.vue'
 const route = useRoute()
 const isEmptyLayout = computed(() => route.meta.layout === 'empty')
 const isHeadlessLayout = computed(() => route.meta.layout === 'headless')
-
-console.log(`isEmptyLayout: ${JSON.stringify(route.meta.layout)}`)
 </script>

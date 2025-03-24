@@ -68,11 +68,51 @@
         <li
           class="flex items-center justify-start w-full hover:bg-divider_dark_2 py-2 px-2 rounded-md"
         >
-          <span class="flex items-center justify-center h-8 w-12 rounded-full bg-purple mr-3">
+          <!-- <span class="flex items-center justify-center h-8 w-12 rounded-full bg-purple mr-3">
             J
           </span>
-          <router-link to="/settings/profile" class="w-full">Judixel89</router-link>
-          <ChevronRightIcon :size="'size-6'" class="h-5 w-5" />
+          <router-link to="/settings/profile" class="w-full">Judixel89</router-link> -->
+          <!-- <ChevronRightIcon :size="'size-6'" class="h-5 w-5" /> -->
+
+          <BaseDropdown align-content="right" direction="up" class="dropdown-profile">
+            <template #toggle="{ toggle }">
+              <BaseButton @click="toggle" class="button-profile">
+                <template v-slot:icon>
+                  <span
+                    class="flex items-center justify-center h-10 w-10 rounded-full mr-3"
+                    :style="`background-color: ${generateRandomColor}`"
+                  >
+                    {{ firstLetterUsername }}
+                  </span>
+                </template>
+                <div class="w-full flex items-center justify-between">
+                  <span>{{ user?.username }}</span>
+                  <ChevronRightIcon class="h-4 w-4" />
+                </div>
+              </BaseButton>
+            </template>
+            <div>
+              <div
+                class="flex items-center justify-start w-full text-sm p-2 hover:bg-divider_dark_2"
+              >
+                <UserIcon class="h-5 w-5 mr-2 text-text_dark_2" />
+                <router-link to="/settings/profile" class="w-full">Profile</router-link>
+              </div>
+              <div
+                class="flex items-center justify-start w-full text-sm p-2 hover:bg-divider_dark_2"
+              >
+                <CreditCardIcon class="h-5 w-5 mr-2 text-text_dark_2" />
+                <router-link to="/settings/billing" class="w-full">Subscriptions</router-link>
+              </div>
+              <hr class="w-full border-t border-text_dark_4" />
+              <div class="flex items-center justify-start w-full text-sm px-2 py-2">
+                <ArrowLeftEndOnRectangleIcon
+                  class="h-5 w-5 mr-2 text-text_dark_2 hover:bg-divider_dark_2"
+                />
+                <button type="button" class="w-full text-left" @click="logout">Logout</button>
+              </div>
+            </div>
+          </BaseDropdown>
         </li>
       </ul>
     </div>
@@ -138,7 +178,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Ref } from 'vue'
 import {
   HomeIcon,
@@ -146,17 +186,32 @@ import {
   Cog8ToothIcon,
   PlusIcon,
   ChevronRightIcon,
-  SparklesIcon
+  SparklesIcon,
+  ArrowLeftEndOnRectangleIcon,
+  UserIcon,
+  CreditCardIcon
 } from '@/shared/components/icons'
+import BaseButton from '@/shared/components/base/BaseButton.vue'
+import BaseDropdown from '@/shared/components/base/BaseDropdown.vue'
 import { useChatStore } from '@/modules/ai/store/chat'
+import { useAuthStore } from '@/modules/auth/store/AuthStore'
 import { storeToRefs } from 'pinia'
 
 const apiChatStore = useChatStore()
+const apiAuthStore = useAuthStore()
+const { logout } = useAuthStore()
+const { user } = storeToRefs(apiAuthStore)
 const { generatedWordsCount } = storeToRefs(apiChatStore)
 
 const collapsed: Ref<boolean> = ref(false)
 
 // const toggle = () => collapsed.value = !collapsed.value
+
+const firstLetterUsername = computed(() => user.value?.username.toLowerCase().charAt(0))
+
+const generateRandomColor = computed(() => {
+  return '#' + ((Math.random() * 0xffffff) << 0).toString(16)
+})
 </script>
 
 <style lang="scss">

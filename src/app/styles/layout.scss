@@ -16,7 +16,7 @@
   }
 
   &--empty {
-    @apply grid grid-cols-6;
+    @apply grid grid-cols-6 bg-black_flash;
 
     header {
       @apply col-span-6;
